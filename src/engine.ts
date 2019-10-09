@@ -144,8 +144,4 @@ export class MarkdownlintEngine implements CodeActionProvider {
       this.outputLine(`Error: ${e}`);
     }
   }
-
-  public dispose() {
-    this.outputChannel.dispose();
-  }
 }
