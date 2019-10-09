@@ -1826,6 +1826,11 @@ markdown-it@10.0.0:
     mdurl "^1.0.1"
     uc.micro "^1.0.5"
 
+markdownlint-rule-helpers@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/markdownlint-rule-helpers/-/markdownlint-rule-helpers-0.5.0.tgz#316569329f2341b8066817292a6733ef56571301"
+  integrity sha512-6bJAV4TjUoDDnqxfb6EKTuZlpYI6vn4kerid7WTrZaEjsWuYDeYDAN+r4o+vbUYFZfJkiBU7NPBqPd4QJ1CZzQ==
+
 markdownlint@^0.17.0:
   version "0.17.0"
   resolved "https://registry.yarnpkg.com/markdownlint/-/markdownlint-0.17.0.tgz#0c005a80e3deb1cd49e6b146fbfa5a50de582d44"

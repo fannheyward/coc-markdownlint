@@ -1,6 +1,17 @@
-import { Document, events, ExtensionContext, workspace } from 'coc.nvim';
-import { DidChangeTextDocumentParams, TextDocument } from 'vscode-languageserver-protocol';
+import { commands, Document, events, ExtensionContext, languages, workspace } from 'coc.nvim';
+import { DidChangeTextDocumentParams, DocumentFilter, TextDocument } from 'vscode-languageserver-protocol';
 import { MarkdownlintEngine } from './engine';
+
+const documentSelector: DocumentFilter[] = [
+  {
+    language: 'markdown',
+    scheme: 'file'
+  },
+  {
+    language: 'markdown',
+    scheme: 'untitled'
+  }
+];
 
 let documentVersion = 0;
 const engine = new MarkdownlintEngine();
@@ -36,12 +47,17 @@ async function didCloseTextDocument(_document: TextDocument) {
 
 export async function activate(context: ExtensionContext): Promise<void> {
   context.subscriptions.push(
+    languages.registerCodeActionProvider(documentSelector, engine, 'markdownlint'),
+
     workspace.onDidOpenTextDocument(didOpenTextDocument),
     workspace.onDidChangeTextDocument(didChangeTextDocument),
     workspace.onDidSaveTextDocument(didSaveTextDocument),
     workspace.onDidCloseTextDocument(didCloseTextDocument),
 
     events.on('BufEnter', bufnr => {
+      if (!bufnr) {
+        return;
+      }
       const doc = workspace.getDocument(bufnr);
       if (!doc) {
         return;
