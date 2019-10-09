@@ -28,7 +28,6 @@ export class MarkdownlintEngine implements CodeActionProvider {
 
     const preferences = workspace.getConfiguration('coc.preferences');
     const rootFolder = await workspace.resolveRootFolder(Uri.parse(workspace.uri), preferences.get('rootPatterns', []));
-
     for (const projectConfigFile of projectConfigFiles) {
       const fullPath = path.join(rootFolder, projectConfigFile);
       if (fs.existsSync(fullPath)) {
@@ -42,6 +41,12 @@ export class MarkdownlintEngine implements CodeActionProvider {
           break;
         } catch (_e) {}
       }
+    }
+
+    const cocConfig = workspace.getConfiguration('markdownlint').get('config');
+    if (cocConfig) {
+      this.config = extend(this.config, cocConfig);
+      this.outputLine(`Info: config from coc-settings.json: ${JSON.stringify(cocConfig)}`);
     }
 
     this.outputLine(`Info: full config: ${JSON.stringify(this.config)}`);
