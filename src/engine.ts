@@ -1,42 +1,53 @@
-import { languages, DiagnosticCollection, workspace } from 'coc.nvim';
+import { languages, Uri, workspace } from 'coc.nvim';
 import extend from 'deep-extend';
 import fs from 'fs';
 import jsYaml from 'js-yaml';
 import markdownlint, { MarkdownlintResult } from 'markdownlint';
+import path from 'path';
 import rc from 'rc';
-import { Position, TextDocument, Diagnostic, Range, DiagnosticSeverity } from 'vscode-languageserver-protocol';
+import { Diagnostic, DiagnosticSeverity, Position, Range, TextDocument } from 'vscode-languageserver-protocol';
 
 const source = 'markdownlint';
 const projectConfigFiles = ['.markdownlint.json', '.markdownlint.yaml', '.markdownlint.yml'];
 const configFileParsers = [JSON.parse, jsYaml.safeLoad];
 
-function getConfig() {
-  let config = rc(source, {});
-  for (const projectConfigFile of projectConfigFiles) {
-    try {
-      fs.accessSync(projectConfigFile, fs.constants.R_OK);
-      // @ts-ignore
-      const projectConfig = markdownlint.readConfigSync(projectConfigFile, configFileParsers);
-      config = extend(config, projectConfig);
-      break;
-    } catch (error) {
-      // Ignore failure
-    }
-  }
-
-  return config;
-}
-
 export class MarkdownlintEngine {
   private outputChannel = workspace.createOutputChannel(source);
   private diagnosticCollection = languages.createDiagnosticCollection(source);
-  private config = getConfig();
+  private config = rc(source, {});
 
   private outputLine(message: string) {
     if (this.outputChannel) {
       this.outputChannel.appendLine(`[${new Date().toLocaleTimeString()}] ${message}`);
-      this.outputChannel.show();
     }
+  }
+
+  private async parseLocalConfig() {
+    this.outputLine(`Info: global config: ${JSON.stringify(this.config)}`);
+
+    const preferences = workspace.getConfiguration('coc.preferences');
+    const rootFolder = await workspace.resolveRootFolder(Uri.parse(workspace.uri), preferences.get('rootPatterns', []));
+
+    for (const projectConfigFile of projectConfigFiles) {
+      const fullPath = path.join(rootFolder, projectConfigFile);
+      if (fs.existsSync(fullPath)) {
+        try {
+          fs.accessSync(fullPath, fs.constants.R_OK);
+          // @ts-ignore
+          const projectConfig = markdownlint.readConfigSync(fullPath, configFileParsers);
+          this.config = extend(this.config, projectConfig);
+
+          this.outputLine(`Info: local config: ${fullPath}, ${JSON.stringify(projectConfig)}`);
+          break;
+        } catch (_e) {}
+      }
+    }
+
+    this.outputLine(`Info: full config: ${JSON.stringify(this.config)}`);
+  }
+
+  constructor() {
+    this.parseLocalConfig();
   }
 
   public lint(document: TextDocument) {
