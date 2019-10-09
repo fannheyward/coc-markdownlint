@@ -17,6 +17,10 @@
     "build": "webpack && node ./generate-config-schema.js",
     "prepare": "npx npm-run-all clean build"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fannheyward/coc-markdownlint.git"
+  },
   "devDependencies": {
     "@types/deep-extend": "^0.4.31",
     "@types/js-yaml": "^3.12.1",
