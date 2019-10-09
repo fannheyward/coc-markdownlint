@@ -27,7 +27,7 @@
     "@types/markdownlint": "^0.13.0",
     "@types/node": "^12.7.1",
     "@types/rc": "^1.1.0",
-    "coc.nvim": "^0.0.73",
+    "coc.nvim": "^0.0.74",
     "deep-extend": "^0.6.0",
     "js-yaml": "^3.13.1",
     "markdownlint": "^0.17.0",
