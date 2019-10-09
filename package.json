@@ -43,7 +43,23 @@
     "configuration": {
       "type": "object",
       "title": "coc-markdownlint configuration",
-      "properties": {}
+      "properties": {
+        "markdownlint.onOpen": {
+          "type": "boolean",
+          "default": true,
+          "description": "Lint on open a file"
+        },
+        "markdownlint.onSave": {
+          "type": "boolean",
+          "default": true,
+          "description": "Lint on saving a file"
+        },
+        "markdownlint.onChange": {
+          "type": "boolean",
+          "default": true,
+          "description": "Lint on changing a file"
+        }
+      }
     },
     "commands": [
       {

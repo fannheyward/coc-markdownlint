@@ -68,8 +68,6 @@ export class MarkdownlintEngine {
     try {
       const results = <MarkdownlintResult[]>markdownlint.sync(options)[document.uri];
       results.forEach((result: MarkdownlintResult) => {
-        // @ts-ignore
-        const ruleName = result.ruleNames[0];
         const ruleDescription = result.ruleDescription;
         // @ts-ignore
         let message = result.ruleNames.join('/') + ': ' + ruleDescription;
@@ -87,7 +85,6 @@ export class MarkdownlintEngine {
         const range = Range.create(start, end);
         const diagnostic = Diagnostic.create(range, message);
         diagnostic.severity = DiagnosticSeverity.Warning;
-        diagnostic.code = ruleName;
         diagnostic.source = source;
         diagnostics.push(diagnostic);
       });
