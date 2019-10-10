@@ -11,7 +11,7 @@
 
 `<Plug>(coc-codeaction)` on current diagnostic, you will find available codeAction, choose by number to fix by markdownlint.
 
-![autofix](https://user-images.githubusercontent.com/345274/66474010-07afe100-eac3-11e9-8ffa-cb116660c8b5.gif)
+![autofix](https://user-images.githubusercontent.com/345274/66532165-f0afd400-eb40-11e9-99a7-2b30fb03e258.gif)
 
 ## Install
 
