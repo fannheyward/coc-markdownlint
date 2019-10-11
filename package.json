@@ -51,6 +51,12 @@
         "url": "./schemas/markdownlint-config-schema.json"
       }
     ],
+    "snippets": [
+      {
+        "language": "markdown",
+        "path": "./snippets/snippets.json"
+      }
+    ],
     "configuration": {
       "type": "object",
       "title": "coc-markdownlint configuration",
