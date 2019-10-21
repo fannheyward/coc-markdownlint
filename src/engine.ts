@@ -26,22 +26,21 @@ export class MarkdownlintEngine implements CodeActionProvider {
   private async parseLocalConfig() {
     this.outputLine(`Info: global config: ${JSON.stringify(this.config)}`);
 
-    const preferences = workspace.getConfiguration('coc.preferences');
-    const rootFolder = await workspace.resolveRootFolder(Uri.parse(workspace.uri), preferences.get('rootPatterns', []));
-    for (const projectConfigFile of projectConfigFiles) {
-      const fullPath = path.join(rootFolder, projectConfigFile);
-      if (fs.existsSync(fullPath)) {
-        try {
-          fs.accessSync(fullPath, fs.constants.R_OK);
+    try {
+      const preferences = workspace.getConfiguration('coc.preferences');
+      const rootFolder = await workspace.resolveRootFolder(Uri.parse(workspace.uri), preferences.get('rootPatterns', []));
+      for (const projectConfigFile of projectConfigFiles) {
+        const fullPath = path.join(rootFolder, projectConfigFile);
+        if (fs.existsSync(fullPath)) {
           // @ts-ignore
           const projectConfig = markdownlint.readConfigSync(fullPath, configFileParsers);
           this.config = extend(this.config, projectConfig);
 
           this.outputLine(`Info: local config: ${fullPath}, ${JSON.stringify(projectConfig)}`);
           break;
-        } catch (_e) {}
+        }
       }
-    }
+    } catch (_e) {}
 
     const cocConfig = workspace.getConfiguration('markdownlint').get('config');
     if (cocConfig) {
