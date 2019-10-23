@@ -93,6 +93,7 @@ export class MarkdownlintEngine implements CodeActionProvider {
   }
 
   public lint(document: TextDocument) {
+    this.diagnosticCollection.clear();
     if (document.languageId !== 'markdown') {
       return;
     }
