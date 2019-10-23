@@ -61,7 +61,7 @@ export class MarkdownlintEngine implements CodeActionProvider {
       // @ts-ignore
       if (diagnostic.ext) {
         // @ts-ignore
-        const ext = <MarkdownlintResult>diagnostic.ext;
+        const ext = diagnostic.ext as MarkdownlintResult;
         const line = await workspace.getLine(document.uri, ext.lineNumber - 1);
         if (!line) {
           continue;
@@ -109,7 +109,7 @@ export class MarkdownlintEngine implements CodeActionProvider {
     };
 
     try {
-      const results = <MarkdownlintResult[]>markdownlint.sync(options)[document.uri];
+      const results = markdownlint.sync(options)[document.uri] as MarkdownlintResult[];
       results.forEach((result: MarkdownlintResult) => {
         const ruleDescription = result.ruleDescription;
         // @ts-ignore
@@ -118,8 +118,8 @@ export class MarkdownlintEngine implements CodeActionProvider {
           message += ' [' + result.errorDetail + ']';
         }
 
-        let start = Position.create(result.lineNumber - 1, 0);
-        let end = Position.create(result.lineNumber - 1, 0);
+        const start = Position.create(result.lineNumber - 1, 0);
+        const end = Position.create(result.lineNumber - 1, 0);
         if (result.errorRange) {
           start.character = result.errorRange[0] - 1;
           end.character = result.errorRange[1];
