@@ -59,23 +59,23 @@ export class MarkdownlintEngine implements CodeActionProvider {
     const codeActions: CodeAction[] = [];
     for (const diagnostic of context.diagnostics) {
       // @ts-ignore
-      if (diagnostic.ext) {
+      if (diagnostic.fixInfo) {
         // @ts-ignore
-        const ext = diagnostic.ext as MarkdownlintResult;
-        const line = await workspace.getLine(document.uri, ext.lineNumber - 1);
-        if (!line) {
-          continue;
-        }
+        const lineNumber = diagnostic.fixInfo.lineNumber - 1 || diagnostic.range.start.line;
+        const line = await workspace.getLine(document.uri, lineNumber);
         // @ts-ignore
-        const newText = applyFix(line, ext.fixInfo);
+        const newText = applyFix(line, diagnostic.fixInfo, '\n');
+
         const edit: WorkspaceEdit = {
           changes: {}
         };
-        const change: TextEdit = {
-          range: Range.create(ext.lineNumber - 1, 0, ext.lineNumber - 1, line.length),
-          newText
-        };
-        edit.changes![document.uri] = [change];
+
+        if (typeof newText === 'string') {
+          const range = Range.create(lineNumber, 0, lineNumber, line.length);
+          edit.changes![document.uri] = [TextEdit.replace(range, newText)];
+        } else {
+          edit.changes![document.uri] = [TextEdit.del(diagnostic.range)];
+        }
 
         const title = `Fix: ${diagnostic.message.split(':')[0]}`;
         const action: CodeAction = {
@@ -88,7 +88,6 @@ export class MarkdownlintEngine implements CodeActionProvider {
       }
     }
 
-    console.error(codeActions.length);
     return codeActions;
   }
 
@@ -123,7 +122,7 @@ export class MarkdownlintEngine implements CodeActionProvider {
         const end = Position.create(result.lineNumber - 1, 0);
         if (result.errorRange) {
           start.character = result.errorRange[0] - 1;
-          end.character = result.errorRange[1];
+          end.character = start.character + result.errorRange[1];
         }
 
         const range = Range.create(start, end);
@@ -131,11 +130,7 @@ export class MarkdownlintEngine implements CodeActionProvider {
         diagnostic.severity = DiagnosticSeverity.Warning;
         diagnostic.source = source;
         // @ts-ignore
-        // TODO: limit same lineNumber
-        if (result.fixInfo && (!result.fixInfo.lineNumber || result.fixInfo.lineNumber === result.lineNumber)) {
-          // @ts-ignore
-          diagnostic.ext = result;
-        }
+        diagnostic.fixInfo = result.fixInfo;
         diagnostics.push(diagnostic);
       });
 
