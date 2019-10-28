@@ -1,15 +1,15 @@
 # coc-markdownlint
 
-[markdownlint](https://github.com/DavidAnson/markdownlint) extension for coc.nvim
+[markdownlint](https://github.com/DavidAnson/markdownlint) for Vim/Neovim, works as coc.nvim extension.
 
 <img width="762" alt="image" src="https://user-images.githubusercontent.com/345274/66472846-abe45880-eac0-11e9-8d0a-6b923fbdbee3.png">
 
 ## Features
 
-- style lint
-- autofix
+- Style lint
+- Autofix
 
-`<Plug>(coc-codeaction)` on current diagnostic, you will find available codeAction, choose by number to fix by markdownlint.
+`<Plug>(coc-codeaction)` on current diagnostic, you will find available codeAction, choose by number to fix.
 
 ![autofix](https://user-images.githubusercontent.com/345274/66532165-f0afd400-eb40-11e9-99a7-2b30fb03e258.gif)
 
