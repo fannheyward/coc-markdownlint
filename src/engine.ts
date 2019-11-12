@@ -98,7 +98,7 @@ export class MarkdownlintEngine implements CodeActionProvider {
         // @ts-ignore
         const newText = applyFix(line, diagnostic.fixInfo, '\n');
 
-        const edit: WorkspaceEdit = {};
+        const edit: WorkspaceEdit = { changes: {} };
         if (typeof newText === 'string') {
           const range = Range.create(lineNumber, 0, lineNumber, line.length);
           edit.changes![document.uri] = [TextEdit.replace(range, newText)];
