@@ -24,6 +24,10 @@
 - `markdownlint.onSave`: lint on saving a file, default `true`
 - `markdownlint.config`: configurations rules used by markdownlint, default `{}`
 
+## Commands
+
+- `markdownlint.fixAll`: fix all errors in current file found by markdownlint
+
 ## Rules
 
 You can configures the markdownlint rules to use, for example:
