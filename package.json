@@ -14,7 +14,7 @@
   "scripts": {
     "clean": "rimraf lib",
     "watch": "webpack --watch",
-    "lint": "eslint src --ext ts --fix",
+    "lint": "eslint src --ext ts",
     "build": "webpack && node ./generate-config-schema.js",
     "prepare": "npm-run-all clean build"
   },

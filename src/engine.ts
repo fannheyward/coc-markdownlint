@@ -98,10 +98,7 @@ export class MarkdownlintEngine implements CodeActionProvider {
         // @ts-ignore
         const newText = applyFix(line, diagnostic.fixInfo, '\n');
 
-        const edit: WorkspaceEdit = {
-          changes: {}
-        };
-
+        const edit: WorkspaceEdit = {};
         if (typeof newText === 'string') {
           const range = Range.create(lineNumber, 0, lineNumber, line.length);
           edit.changes![document.uri] = [TextEdit.replace(range, newText)];
@@ -187,13 +184,13 @@ export class MarkdownlintEngine implements CodeActionProvider {
     const text = document.getText();
     const fixedText = applyFixes(text, results);
     if (text != fixedText) {
-      const edit: WorkspaceEdit = {
-        changes: {}
-      };
-
       const doc = workspace.getDocument(document.uri);
       const end = Position.create(doc.lineCount - 1, doc.getline(doc.lineCount - 1).length);
-      edit.changes![document.uri] = [TextEdit.replace(Range.create(Position.create(0, 0), end), fixedText)];
+      const edit: WorkspaceEdit = {
+        changes: {
+          [document.uri]: [TextEdit.replace(Range.create(Position.create(0, 0), end), fixedText)]
+        }
+      };
       await workspace.applyEdit(edit);
     }
   }
