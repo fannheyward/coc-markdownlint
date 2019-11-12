@@ -1,4 +1,4 @@
-import { Document, events, ExtensionContext, languages, workspace } from 'coc.nvim';
+import { commands, Document, events, ExtensionContext, languages, workspace } from 'coc.nvim';
 import { DidChangeTextDocumentParams, DocumentFilter, TextDocument } from 'vscode-languageserver-protocol';
 import { MarkdownlintEngine } from './engine';
 
@@ -43,6 +43,11 @@ async function didSaveTextDocument(document: TextDocument) {
 
 export async function activate(context: ExtensionContext): Promise<void> {
   context.subscriptions.push(
+    commands.registerCommand('markdownlint.fixAll', async () => {
+      const { document, position } = await workspace.getCurrentState();
+      console.error(position);
+      engine.fixAll(document);
+    }),
     languages.registerCodeActionProvider(documentSelector, engine, 'markdownlint'),
 
     workspace.onDidOpenTextDocument(didOpenTextDocument),
@@ -66,4 +71,3 @@ export async function activate(context: ExtensionContext): Promise<void> {
     didOpenTextDocument(doc.textDocument);
   });
 }
-

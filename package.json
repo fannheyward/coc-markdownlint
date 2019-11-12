@@ -1541,8 +1541,8 @@
     },
     "commands": [
       {
-        "command": "coc-markdownlint.Command",
-        "title": "coc-markdownlint command title"
+        "command": "markdownlint.fixAll",
+        "title": "Fix all errors found by markdownlint"
       }
     ]
   }

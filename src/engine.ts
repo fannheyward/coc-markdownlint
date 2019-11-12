@@ -3,7 +3,7 @@ import extend from 'deep-extend';
 import fs from 'fs';
 import jsYaml from 'js-yaml';
 import markdownlint, { MarkdownlintResult } from 'markdownlint';
-import { applyFix } from 'markdownlint-rule-helpers';
+import { applyFix, applyFixes } from 'markdownlint-rule-helpers';
 import path from 'path';
 import rc from 'rc';
 import { CodeActionContext, Diagnostic, DiagnosticSeverity, Position, Range, TextDocument, TextEdit, WorkspaceEdit } from 'vscode-languageserver-protocol';
@@ -49,6 +49,26 @@ export class MarkdownlintEngine implements CodeActionProvider {
     }
 
     this.outputLine(`Info: full config: ${JSON.stringify(this.config)}`);
+  }
+
+  private markdownlintWrapper(document: TextDocument): MarkdownlintResult[] {
+    const options: markdownlint.MarkdownlintOptions = {
+      resultVersion: 3,
+      config: this.config,
+      // customRules: customRules,
+      strings: {
+        [document.uri]: document.getText()
+      }
+    };
+
+    let results: MarkdownlintResult[] = [];
+    try {
+      results = markdownlint.sync(options)[document.uri] as MarkdownlintResult[];
+    } catch (e) {
+      this.outputLine(`Error: lint exception: ${e.stack}`);
+    }
+
+    return results;
   }
 
   constructor() {
@@ -97,46 +117,56 @@ export class MarkdownlintEngine implements CodeActionProvider {
       return;
     }
 
+    const results = this.markdownlintWrapper(document);
+    if (!results.length) {
+      return;
+    }
+
     const diagnostics: Diagnostic[] = [];
-
-    const options: markdownlint.MarkdownlintOptions = {
-      resultVersion: 3,
-      config: this.config,
-      // customRules: customRules,
-      strings: {
-        [document.uri]: document.getText()
+    results.forEach((result: MarkdownlintResult) => {
+      const ruleDescription = result.ruleDescription;
+      // @ts-ignore
+      let message = result.ruleNames.join('/') + ': ' + ruleDescription;
+      if (result.errorDetail) {
+        message += ' [' + result.errorDetail + ']';
       }
-    };
 
-    try {
-      const results = markdownlint.sync(options)[document.uri] as MarkdownlintResult[];
-      results.forEach((result: MarkdownlintResult) => {
-        const ruleDescription = result.ruleDescription;
-        // @ts-ignore
-        let message = result.ruleNames.join('/') + ': ' + ruleDescription;
-        if (result.errorDetail) {
-          message += ' [' + result.errorDetail + ']';
-        }
+      const start = Position.create(result.lineNumber - 1, 0);
+      const end = Position.create(result.lineNumber - 1, 0);
+      if (result.errorRange) {
+        start.character = result.errorRange[0] - 1;
+        end.character = start.character + result.errorRange[1];
+      }
 
-        const start = Position.create(result.lineNumber - 1, 0);
-        const end = Position.create(result.lineNumber - 1, 0);
-        if (result.errorRange) {
-          start.character = result.errorRange[0] - 1;
-          end.character = start.character + result.errorRange[1];
-        }
+      const range = Range.create(start, end);
+      const diagnostic = Diagnostic.create(range, message);
+      diagnostic.severity = DiagnosticSeverity.Warning;
+      diagnostic.source = source;
+      // @ts-ignore
+      diagnostic.fixInfo = result.fixInfo;
+      diagnostics.push(diagnostic);
+    });
 
-        const range = Range.create(start, end);
-        const diagnostic = Diagnostic.create(range, message);
-        diagnostic.severity = DiagnosticSeverity.Warning;
-        diagnostic.source = source;
-        // @ts-ignore
-        diagnostic.fixInfo = result.fixInfo;
-        diagnostics.push(diagnostic);
-      });
+    this.diagnosticCollection.set(document.uri, diagnostics);
+  }
 
-      this.diagnosticCollection.set(document.uri, diagnostics);
-    } catch (e) {
-      this.outputLine(`Error: ${e}`);
+  public async fixAll(document: TextDocument) {
+    const results = this.markdownlintWrapper(document);
+    if (!results.length) {
+      return;
+    }
+
+    const text = document.getText();
+    const fixedText = applyFixes(text, results);
+    if (text != fixedText) {
+      const edit: WorkspaceEdit = {
+        changes: {}
+      };
+
+      const doc = workspace.getDocument(document.uri);
+      const end = Position.create(doc.lineCount - 1, doc.getline(doc.lineCount - 1).length);
+      edit.changes![document.uri] = [TextEdit.replace(Range.create(Position.create(0, 0), end), fixedText)];
+      await workspace.applyEdit(edit);
     }
   }
 }
