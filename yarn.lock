@@ -1384,6 +1384,11 @@ vscode-jsonrpc@^4.1.0-next.2:
   resolved "https://registry.yarnpkg.com/vscode-jsonrpc/-/vscode-jsonrpc-4.1.0-next.3.tgz#05fe742959a2726020d4d0bfbc3d3c97873c7fde"
   integrity sha512-Z6oxBiMks2+UADV1QHXVooSakjyhI+eHTnXzDyVvVMmegvSfkXk2w6mPEdSkaNHFBdtWW7n20H1yw2nA3A17mg==
 
+vscode-jsonrpc@^5.0.0-next.3:
+  version "5.0.0-next.4"
+  resolved "https://registry.yarnpkg.com/vscode-jsonrpc/-/vscode-jsonrpc-5.0.0-next.4.tgz#bbe1f7b4876eefe3e93bffd93672125506698d59"
+  integrity sha512-Tos3tXP62ZTB9WowWwhvfVNdu1mEwQF/j7DqJuVL4QKhk311gH+mda0PZpG95LWyh5CCRpHMns4vNmMgZQrvXQ==
+
 vscode-languageserver-protocol@3.15.0-next.6:
   version "3.15.0-next.6"
   resolved "https://registry.yarnpkg.com/vscode-languageserver-protocol/-/vscode-languageserver-protocol-3.15.0-next.6.tgz#a8aeb7e7dd65da8216b386db59494cdfd3215d92"
@@ -1391,6 +1396,14 @@ vscode-languageserver-protocol@3.15.0-next.6:
   dependencies:
     vscode-jsonrpc "^4.1.0-next.2"
     vscode-languageserver-types "^3.15.0-next.2"
+
+vscode-languageserver-protocol@^3.15.0-next.11:
+  version "3.15.0-next.11"
+  resolved "https://registry.yarnpkg.com/vscode-languageserver-protocol/-/vscode-languageserver-protocol-3.15.0-next.11.tgz#fef95eca6f7f544069cfd48610124ec0060e2cdd"
+  integrity sha512-tpRnPtyS6q0EYH5RH12AtdMecgu3HVL2bBdBGzeQRN8Tf93I9LY4Fl5TXUNkIBjuxjMshkCM8ikhb+hlnWvB2w==
+  dependencies:
+    vscode-jsonrpc "^5.0.0-next.3"
+    vscode-languageserver-types "^3.15.0-next.7"
 
 vscode-languageserver-types@3.15.0-next.2:
   version "3.15.0-next.2"
@@ -1401,6 +1414,11 @@ vscode-languageserver-types@^3.15.0-next.2:
   version "3.15.0-next.6"
   resolved "https://registry.yarnpkg.com/vscode-languageserver-types/-/vscode-languageserver-types-3.15.0-next.6.tgz#7a990d00c39ad4e744335afb4cc422a3e687ff25"
   integrity sha512-+4jfvmZ26oFMSX6EgPRB75PWHoT8pzyWuSSWk0erC4hTzmJq2gWxVLh20bZutZjMmiivawvPshtM3XZhX2SttA==
+
+vscode-languageserver-types@^3.15.0-next.7:
+  version "3.15.0-next.8"
+  resolved "https://registry.yarnpkg.com/vscode-languageserver-types/-/vscode-languageserver-types-3.15.0-next.8.tgz#59bfe70e5690bcef7d28d0f3a7f813915edf62e1"
+  integrity sha512-AEfWrSNyeamWMKPehh/kd3nBnKD9ZGCPhzfxMnW9YNqElSh28G2+Puk3knIQWyaWyV6Bzh28ok9BRJsPzXFCkQ==
 
 vscode-uri@^2.0.3:
   version "2.0.3"

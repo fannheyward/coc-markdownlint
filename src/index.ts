@@ -43,7 +43,7 @@ async function didSaveTextDocument(document: TextDocument) {
 
 export async function activate(context: ExtensionContext): Promise<void> {
   context.subscriptions.push(
-    commands.registerCommand('markdownlint.fixAll', async () => {
+    commands.registerCommand(engine.fixAllCommandName, async () => {
       const { document, position } = await workspace.getCurrentState();
       console.error(position);
       engine.fixAll(document);

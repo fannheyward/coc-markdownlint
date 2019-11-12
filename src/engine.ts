@@ -6,16 +6,27 @@ import markdownlint, { MarkdownlintResult } from 'markdownlint';
 import { applyFix, applyFixes } from 'markdownlint-rule-helpers';
 import path from 'path';
 import rc from 'rc';
-import { CodeActionContext, Diagnostic, DiagnosticSeverity, Position, Range, TextDocument, TextEdit, WorkspaceEdit } from 'vscode-languageserver-protocol';
+import {
+  CodeActionKind,
+  CodeActionContext,
+  Diagnostic,
+  DiagnosticSeverity,
+  Position,
+  Range,
+  TextDocument,
+  TextEdit,
+  WorkspaceEdit
+} from 'vscode-languageserver-protocol';
 
-const source = 'markdownlint';
 const projectConfigFiles = ['.markdownlint.json', '.markdownlint.yaml', '.markdownlint.yml'];
 const configFileParsers = [JSON.parse, jsYaml.safeLoad];
 
 export class MarkdownlintEngine implements CodeActionProvider {
-  private outputChannel = workspace.createOutputChannel(source);
-  private diagnosticCollection = languages.createDiagnosticCollection(source);
-  private config = rc(source, {});
+  public readonly fixAllCommandName = 'markdownlint.fixAll';
+  private readonly source = 'markdownlint';
+  private outputChannel = workspace.createOutputChannel(this.source);
+  private diagnosticCollection = languages.createDiagnosticCollection(this.source);
+  private config = rc(this.source, {});
 
   private outputLine(message: string) {
     if (this.outputChannel) {
@@ -77,6 +88,7 @@ export class MarkdownlintEngine implements CodeActionProvider {
 
   public async provideCodeActions(document: TextDocument, _range: Range, context: CodeActionContext) {
     const codeActions: CodeAction[] = [];
+    const fixInfoDiagnostics: Diagnostic[] = [];
     for (const diagnostic of context.diagnostics) {
       // @ts-ignore
       if (diagnostic.fixInfo) {
@@ -104,8 +116,24 @@ export class MarkdownlintEngine implements CodeActionProvider {
           diagnostics: [...context.diagnostics]
         };
 
+        fixInfoDiagnostics.push(diagnostic);
         codeActions.push(action);
       }
+    }
+
+    if (fixInfoDiagnostics.length) {
+      const title = 'Fix All error found by markdownlint';
+      const sourceFixAllAction: CodeAction = {
+        title,
+        kind: CodeActionKind.SourceFixAll,
+        diagnostics: fixInfoDiagnostics,
+        command: {
+          title,
+          command: this.fixAllCommandName
+        }
+      };
+
+      codeActions.push(sourceFixAllAction);
     }
 
     return codeActions;
@@ -141,7 +169,7 @@ export class MarkdownlintEngine implements CodeActionProvider {
       const range = Range.create(start, end);
       const diagnostic = Diagnostic.create(range, message);
       diagnostic.severity = DiagnosticSeverity.Warning;
-      diagnostic.source = source;
+      diagnostic.source = this.source;
       // @ts-ignore
       diagnostic.fixInfo = result.fixInfo;
       diagnostics.push(diagnostic);
