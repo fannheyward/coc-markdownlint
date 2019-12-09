@@ -1445,9 +1445,9 @@ vscode-languageserver-protocol@3.15.0-next.6:
     vscode-languageserver-types "^3.15.0-next.2"
 
 vscode-languageserver-protocol@^3.15.0-next.11:
-  version "3.15.0-next.13"
-  resolved "https://registry.yarnpkg.com/vscode-languageserver-protocol/-/vscode-languageserver-protocol-3.15.0-next.13.tgz#05a742238e87f421df32f1f99a83f616242d6cca"
-  integrity sha512-2UGxOKc5VHav15n3zY5dtaOXGL/JuV0K2Mem/n6lhF8i3vaqIAnKv004SPU0flYHXIfCcQM7kCL+nwWVJ1K1qw==
+  version "3.15.0-next.14"
+  resolved "https://registry.yarnpkg.com/vscode-languageserver-protocol/-/vscode-languageserver-protocol-3.15.0-next.14.tgz#e7eb337f1adb50b4a41c05d436ce03c8df1f4d14"
+  integrity sha512-xUwwno6Q6RFd2Z2EWV9D3dQlsKPnHyiZMNWq+EC7JJdp2WH1gRlD+KPX4UGRCnJK0WI5omqHV313IESPwRY5xA==
   dependencies:
     vscode-jsonrpc "^5.0.0-next.5"
     vscode-languageserver-types "^3.15.0-next.9"
