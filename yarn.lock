@@ -45,11 +45,6 @@
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.3.tgz#bdfd69d61e464dcc81b25159c270d75a73c1a636"
   integrity sha512-Il2DtDVRGDcqjDtE+rF8iqg1CArehSK84HZJCT7AMITlyXRBpuPhqGLDQMowraqqu1coEaimg4ZOqggt6L6L+A==
 
-"@types/markdownlint@^0.13.0":
-  version "0.13.0"
-  resolved "https://registry.yarnpkg.com/@types/markdownlint/-/markdownlint-0.13.0.tgz#546f94d5b5e1105bae24f8c672d4d3a070898366"
-  integrity sha512-Quep2bcDhYphr/O6Xy0YWlDQiLgqGNgELfiBUBrOLbdoyrwvLzaUsNKpJH5gfFTOkDW7akBR2u/FjGGLowFWKw==
-
 "@types/node@^12.7.1":
   version "12.12.18"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.12.18.tgz#8d16634797d63c2af5bc647ce879f8de20b56469"
