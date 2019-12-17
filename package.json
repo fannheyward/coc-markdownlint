@@ -34,7 +34,7 @@
     "deep-extend": "^0.6.0",
     "eslint": "^6.6.0",
     "js-yaml": "^3.13.1",
-    "markdownlint": "^0.17.0",
+    "markdownlint": "^0.18.0",
     "markdownlint-rule-helpers": "^0.6.0",
     "rc": "^1.2.8",
     "ts-loader": "^6.0.4",
