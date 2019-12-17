@@ -7,4 +7,5 @@ tsconfig.json
 webpack.config.js
 yarn.lock
 yarn-error.log
-fix_test.md
+err.md
+ok.md
