@@ -34,8 +34,8 @@ export class MarkdownlintEngine implements CodeActionProvider {
     }
   }
 
-  private async parseLocalConfig() {
-    this.outputLine(`Info: global config: ${JSON.stringify(this.config)}`);
+  async parseConfig() {
+    this.outputLine(`Info: global config: ${JSON.stringify(rc(this.source, {}))}`);
 
     try {
       const preferences = workspace.getConfiguration('coc.preferences');
@@ -74,16 +74,11 @@ export class MarkdownlintEngine implements CodeActionProvider {
     let results: LintError[] = [];
     try {
       results = markdownlint.sync(options)[document.uri] as LintError[];
-      console.error(results);
     } catch (e) {
       this.outputLine(`Error: lint exception: ${e.stack}`);
     }
 
     return results;
-  }
-
-  constructor() {
-    this.parseLocalConfig();
   }
 
   public async provideCodeActions(document: TextDocument, _range: Range, context: CodeActionContext) {

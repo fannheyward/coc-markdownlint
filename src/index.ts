@@ -42,13 +42,14 @@ async function didSaveTextDocument(document: TextDocument) {
 }
 
 export async function activate(context: ExtensionContext): Promise<void> {
+  await engine.parseConfig();
+
   context.subscriptions.push(
+    languages.registerCodeActionProvider(documentSelector, engine, 'markdownlint'),
     commands.registerCommand(engine.fixAllCommandName, async () => {
-      const { document, position } = await workspace.getCurrentState();
-      console.error(position);
+      const { document } = await workspace.getCurrentState();
       engine.fixAll(document);
     }),
-    languages.registerCodeActionProvider(documentSelector, engine, 'markdownlint'),
 
     workspace.onDidOpenTextDocument(didOpenTextDocument),
     workspace.onDidChangeTextDocument(didChangeTextDocument),
