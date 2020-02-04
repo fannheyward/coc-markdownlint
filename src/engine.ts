@@ -26,7 +26,7 @@ export class MarkdownlintEngine implements CodeActionProvider {
   private readonly source = 'markdownlint';
   private outputChannel = workspace.createOutputChannel(this.source);
   private diagnosticCollection = languages.createDiagnosticCollection(this.source);
-  private config = rc(this.source, {});
+  private config: {[key: string]: any} = {};
 
   private outputLine(message: string) {
     if (this.outputChannel) {
@@ -35,7 +35,12 @@ export class MarkdownlintEngine implements CodeActionProvider {
   }
 
   async parseConfig() {
-    this.outputLine(`Info: global config: ${JSON.stringify(rc(this.source, {}))}`);
+    try {
+      this.config = rc(this.source, {});
+      this.outputLine(`Info: global config: ${JSON.stringify(rc(this.source, {}))}`);
+    } catch (e) {
+      this.outputLine(`Error: global config parse failed: ${e}`)
+    }
 
     try {
       const preferences = workspace.getConfiguration('coc.preferences');
@@ -50,7 +55,9 @@ export class MarkdownlintEngine implements CodeActionProvider {
           break;
         }
       }
-    } catch (_e) {}
+    } catch (e) {
+      this.outputLine(`Error: local config parse failed: ${e}`)
+    }
 
     const cocConfig = workspace.getConfiguration('markdownlint').get('config');
     if (cocConfig) {
