@@ -54,3 +54,6 @@ Some text here
 
 Some more text here
 
+Text *emphasis
+ emphasis* text
+
