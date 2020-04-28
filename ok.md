@@ -8,7 +8,7 @@ Test
 
 For more information, see <https://www.example.com/.>
 
-(Incorrect link syntax)[<https://www.example.com/]>
+[Incorrect link syntax](https://www.example.com/)
 
 Some text
 
@@ -23,7 +23,7 @@ Here is some more __bold__ text.
 
 Here is some more _italic_ text.
 
-`some text`
+` some text `
 
 [a link](https://www.example.com/)
 
@@ -55,5 +55,5 @@ Some text here
 Some more text here
 
 Text *emphasis
- emphasis* text
+emphasis* text
 
