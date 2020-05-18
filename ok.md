@@ -12,18 +12,18 @@ For more information, see <https://www.example.com/.>
 
 Some text
 
-* Some
-* List
+- Some
+- List
 
 Here is some **bold** text.
 
-Here is some *italic* text.
+Here is some _italic_ text.
 
-Here is some more __bold__ text.
+Here is some more **bold** text.
 
 Here is some more _italic_ text.
 
-` some text `
+`some text`
 
 [a link](https://www.example.com/)
 
@@ -31,13 +31,13 @@ Here is some more _italic_ text.
 
 ### Detail
 
-* List item
+- List item
 
 Sapce:
 
-* list item text
+- list item text
 
-* list item text
+- list item text
 
 Quote:
 
@@ -54,6 +54,5 @@ Some text here
 
 Some more text here
 
-Text *emphasis
-emphasis* text
-
+Text _emphasis
+emphasis_ text
