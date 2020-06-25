@@ -48,6 +48,7 @@ export class MarkdownlintEngine implements CodeActionProvider {
       for (const projectConfigFile of projectConfigFiles) {
         const fullPath = path.join(rootFolder, projectConfigFile);
         if (fs.existsSync(fullPath)) {
+          // @ts-ignore
           const projectConfig = markdownlint.readConfigSync(fullPath, configFileParsers);
           this.config = extend(this.config, projectConfig);
 
