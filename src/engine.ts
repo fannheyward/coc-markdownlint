@@ -15,7 +15,7 @@ import {
   Range,
   TextDocument,
   TextEdit,
-  WorkspaceEdit
+  WorkspaceEdit,
 } from 'vscode-languageserver-protocol';
 
 const projectConfigFiles = ['.markdownlint.json', '.markdownlint.yaml', '.markdownlint.yml'];
@@ -26,7 +26,7 @@ export class MarkdownlintEngine implements CodeActionProvider {
   private readonly source = 'markdownlint';
   private outputChannel = workspace.createOutputChannel(this.source);
   private diagnosticCollection = languages.createDiagnosticCollection(this.source);
-  private config: {[key: string]: any} = {};
+  private config: { [key: string]: any } = {};
 
   private outputLine(message: string) {
     if (this.outputChannel) {
@@ -39,7 +39,7 @@ export class MarkdownlintEngine implements CodeActionProvider {
       this.config = rc(this.source, {});
       this.outputLine(`Info: global config: ${JSON.stringify(rc(this.source, {}))}`);
     } catch (e) {
-      this.outputLine(`Error: global config parse failed: ${e}`)
+      this.outputLine(`Error: global config parse failed: ${e}`);
     }
 
     try {
@@ -57,7 +57,7 @@ export class MarkdownlintEngine implements CodeActionProvider {
         }
       }
     } catch (e) {
-      this.outputLine(`Error: local config parse failed: ${e}`)
+      this.outputLine(`Error: local config parse failed: ${e}`);
     }
 
     const cocConfig = workspace.getConfiguration('markdownlint').get('config');
@@ -75,8 +75,8 @@ export class MarkdownlintEngine implements CodeActionProvider {
       config: this.config,
       // customRules: customRules,
       strings: {
-        [document.uri]: document.getText()
-      }
+        [document.uri]: document.getText(),
+      },
     };
 
     let results: LintError[] = [];
@@ -113,7 +113,7 @@ export class MarkdownlintEngine implements CodeActionProvider {
         const action: CodeAction = {
           title,
           edit,
-          diagnostics: [...context.diagnostics]
+          diagnostics: [...context.diagnostics],
         };
 
         fixInfoDiagnostics.push(diagnostic);
@@ -129,8 +129,8 @@ export class MarkdownlintEngine implements CodeActionProvider {
         diagnostics: fixInfoDiagnostics,
         command: {
           title,
-          command: this.fixAllCommandName
-        }
+          command: this.fixAllCommandName,
+        },
       };
 
       codeActions.push(sourceFixAllAction);
@@ -190,8 +190,8 @@ export class MarkdownlintEngine implements CodeActionProvider {
       const end = Position.create(doc.lineCount - 1, doc.getline(doc.lineCount - 1).length);
       const edit: WorkspaceEdit = {
         changes: {
-          [document.uri]: [TextEdit.replace(Range.create(Position.create(0, 0), end), fixedText)]
-        }
+          [document.uri]: [TextEdit.replace(Range.create(Position.create(0, 0), end), fixedText)],
+        },
       };
       await workspace.applyEdit(edit);
     }

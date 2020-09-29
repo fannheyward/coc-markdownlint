@@ -5,12 +5,12 @@ import { MarkdownlintEngine } from './engine';
 const documentSelector: DocumentFilter[] = [
   {
     language: 'markdown',
-    scheme: 'file'
+    scheme: 'file',
   },
   {
     language: 'markdown',
-    scheme: 'untitled'
-  }
+    scheme: 'untitled',
+  },
 ];
 
 let documentVersion = 0;
@@ -55,7 +55,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
     workspace.onDidChangeTextDocument(didChangeTextDocument),
     workspace.onDidSaveTextDocument(didSaveTextDocument),
 
-    events.on('BufEnter', bufnr => {
+    events.on('BufEnter', (bufnr) => {
       if (!bufnr) {
         return;
       }
