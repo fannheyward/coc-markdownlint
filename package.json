@@ -29,7 +29,7 @@
     "@types/rc": "^1.1.0",
     "@typescript-eslint/eslint-plugin": "^4.0.0",
     "@typescript-eslint/parser": "^3.4.0",
-    "coc.nvim": "^0.0.77",
+    "coc.nvim": "^0.0.79",
     "deep-extend": "^0.6.0",
     "eslint": "^7.2.0",
     "js-yaml": "^3.14.0",
