@@ -1,5 +1,6 @@
-import { commands, Document, events, ExtensionContext, languages, workspace } from 'coc.nvim';
-import { DidChangeTextDocumentParams, DocumentFilter, TextDocument } from 'vscode-languageserver-protocol';
+import { commands, Document, ExtensionContext, languages, workspace } from 'coc.nvim';
+import { DidChangeTextDocumentParams, DocumentFilter } from 'vscode-languageserver-protocol';
+import { TextDocument } from 'vscode-languageserver-textdocument';
 import { MarkdownlintEngine } from './engine';
 
 const documentSelector: DocumentFilter[] = [
@@ -54,18 +55,6 @@ export async function activate(context: ExtensionContext): Promise<void> {
     workspace.onDidOpenTextDocument(didOpenTextDocument),
     workspace.onDidChangeTextDocument(didChangeTextDocument),
     workspace.onDidSaveTextDocument(didSaveTextDocument),
-
-    events.on('BufEnter', (bufnr) => {
-      if (!bufnr) {
-        return;
-      }
-      const doc = workspace.getDocument(bufnr);
-      if (!doc) {
-        return;
-      }
-
-      didOpenTextDocument(doc.textDocument);
-    })
   );
 
   workspace.documents.map((doc: Document) => {

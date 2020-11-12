@@ -13,10 +13,10 @@ import {
   DiagnosticSeverity,
   Position,
   Range,
-  TextDocument,
   TextEdit,
   WorkspaceEdit,
 } from 'vscode-languageserver-protocol';
+import { TextDocument } from 'vscode-languageserver-textdocument'
 
 const projectConfigFiles = ['.markdownlint.json', '.markdownlint.yaml', '.markdownlint.yml'];
 const configFileParsers = [JSON.parse, jsYaml.safeLoad];
