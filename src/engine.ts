@@ -140,10 +140,10 @@ export class MarkdownlintEngine implements CodeActionProvider {
   }
 
   public lint(document: TextDocument) {
-    this.diagnosticCollection.clear();
     if (document.languageId !== 'markdown') {
       return;
     }
+    this.diagnosticCollection.clear();
 
     const results = this.markdownlintWrapper(document);
     if (!results.length) {
