@@ -1,4 +1,4 @@
-import { CodeAction, CodeActionProvider, languages, Uri, workspace } from 'coc.nvim';
+import { TextDocument, CodeAction, CodeActionContext, CodeActionKind, CodeActionProvider, Diagnostic, DiagnosticSeverity, languages, Position, Range, TextEdit, window, workspace, WorkspaceEdit } from 'coc.nvim';
 import extend from 'deep-extend';
 import fs from 'fs';
 import jsYaml from 'js-yaml';
@@ -6,17 +6,6 @@ import markdownlint, { LintError } from 'markdownlint';
 import { applyFix, applyFixes } from 'markdownlint-rule-helpers';
 import path from 'path';
 import rc from 'rc';
-import {
-  CodeActionKind,
-  CodeActionContext,
-  Diagnostic,
-  DiagnosticSeverity,
-  Position,
-  Range,
-  TextEdit,
-  WorkspaceEdit,
-} from 'vscode-languageserver-protocol';
-import { TextDocument } from 'vscode-languageserver-textdocument'
 
 const projectConfigFiles = ['.markdownlint.json', '.markdownlint.yaml', '.markdownlint.yml'];
 const configFileParsers = [JSON.parse, jsYaml.safeLoad];
@@ -24,7 +13,7 @@ const configFileParsers = [JSON.parse, jsYaml.safeLoad];
 export class MarkdownlintEngine implements CodeActionProvider {
   public readonly fixAllCommandName = 'markdownlint.fixAll';
   private readonly source = 'markdownlint';
-  private outputChannel = workspace.createOutputChannel(this.source);
+  private outputChannel = window.createOutputChannel(this.source);
   private diagnosticCollection = languages.createDiagnosticCollection(this.source);
   private config: { [key: string]: any } = {};
 
@@ -43,10 +32,8 @@ export class MarkdownlintEngine implements CodeActionProvider {
     }
 
     try {
-      const preferences = workspace.getConfiguration('coc.preferences');
-      const rootFolder = await workspace.resolveRootFolder(Uri.parse(workspace.uri), preferences.get('rootPatterns', []));
       for (const projectConfigFile of projectConfigFiles) {
-        const fullPath = path.join(rootFolder, projectConfigFile);
+        const fullPath = path.join(workspace.root, projectConfigFile);
         if (fs.existsSync(fullPath)) {
           // @ts-ignore
           const projectConfig = markdownlint.readConfigSync(fullPath, configFileParsers);

@@ -1,6 +1,4 @@
-import { commands, Document, ExtensionContext, languages, workspace } from 'coc.nvim';
-import { DidChangeTextDocumentParams, DocumentFilter } from 'vscode-languageserver-protocol';
-import { TextDocument } from 'vscode-languageserver-textdocument';
+import { commands, DidChangeTextDocumentParams, Document, DocumentFilter, ExtensionContext, languages, TextDocument, workspace } from 'coc.nvim';
 import { MarkdownlintEngine } from './engine';
 
 const documentSelector: DocumentFilter[] = [
