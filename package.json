@@ -9,7 +9,7 @@
     "coc.nvim"
   ],
   "engines": {
-    "coc": "^0.0.70"
+    "coc": "^0.0.80"
   },
   "scripts": {
     "clean": "rimraf lib",
