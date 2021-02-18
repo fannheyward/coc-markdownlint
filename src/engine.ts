@@ -116,6 +116,32 @@ export class MarkdownlintEngine implements CodeActionProvider {
       }
     }
 
+    if (range.start.line === range.end.line && range.start.character === 0) {
+      // <!-- markdownlint-disable-next-line -->
+      const edit = TextEdit.insert(Position.create(range.start.line, 0), '<!-- markdownlint-disable-next-line -->\n')
+      codeActions.push({
+        title: 'Disable markdownlint for current line',
+        edit: {
+          changes: {
+            [doc.uri]: [edit]
+          }
+        }
+      })
+    }
+
+    if (whole) {
+      // <!-- markdownlint-disable-file -->
+      const edit = TextEdit.insert(Position.create(0, 0), '<!-- markdownlint-disable-file -->\n')
+      codeActions.push({
+        title: 'Disable markdownlint for current file',
+        edit: {
+          changes: {
+            [doc.uri]: [edit]
+          }
+        }
+      })
+    }
+
     if (fixInfoDiagnostics.length) {
       const title = 'Fix All error found by markdownlint';
       const sourceFixAllAction: CodeAction = {
