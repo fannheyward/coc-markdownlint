@@ -76,7 +76,13 @@ export class MarkdownlintEngine implements CodeActionProvider {
     return results;
   }
 
-  public async provideCodeActions(document: TextDocument, _range: Range, context: CodeActionContext) {
+  public async provideCodeActions(document: TextDocument, range: Range, context: CodeActionContext) {
+    const doc = workspace.getDocument(document.uri);
+    const wholeRange = Range.create(0, 0, doc.lineCount, 0);
+    let whole = false;
+    if (range.start.line === wholeRange.start.line && range.start.character === wholeRange.start.character && range.end.line === wholeRange.end.line && range.end.character === wholeRange.end.character) {
+      whole = true;
+    }
     const codeActions: CodeAction[] = [];
     const fixInfoDiagnostics: Diagnostic[] = [];
     for (const diagnostic of context.diagnostics) {
@@ -104,7 +110,9 @@ export class MarkdownlintEngine implements CodeActionProvider {
         };
 
         fixInfoDiagnostics.push(diagnostic);
-        codeActions.push(action);
+        if (!whole) {
+          codeActions.push(action);
+        }
       }
     }
 
