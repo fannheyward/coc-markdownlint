@@ -28,6 +28,14 @@
 
 - `markdownlint.fixAll`: fix all errors in current file found by markdownlint
 
+## CodeActions
+
+Provides codeAction for current file or line to disable markdownlint, triggered
+by `<Plug>(coc-codeaction)` and `<Plug>(coc-codeaction-line)`
+
+- `<!-- markdownlint-disable-file -->`
+- `<!-- markdownlint-disable-next-line -->`
+
 ## Rules
 
 You can configures the markdownlint rules to use, for example:
