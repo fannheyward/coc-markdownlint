@@ -1,0 +1,20 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: weekly
+    time: "21:00"
+  open-pull-requests-limit: 10
+  reviewers:
+  - fannheyward
+  ignore:
+  - dependency-name: js-yaml
+    versions:
+    - ">= 4.a, < 5"
+  - dependency-name: "@types/js-yaml"
+    versions:
+    - ">= 4.a, < 5"
+  - dependency-name: markdownlint
+    versions:
+    - 0.23.0
