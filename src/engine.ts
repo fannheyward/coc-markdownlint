@@ -8,7 +8,7 @@ import path from 'path';
 import rc from 'rc';
 
 const projectConfigFiles = ['.markdownlint.json', '.markdownlint.yaml', '.markdownlint.yml'];
-const configFileParsers = [JSON.parse, jsYaml.safeLoad];
+const configFileParsers = [JSON.parse, jsYaml.load];
 
 export class MarkdownlintEngine implements CodeActionProvider {
   public readonly fixAllCommandName = 'markdownlint.fixAll';
