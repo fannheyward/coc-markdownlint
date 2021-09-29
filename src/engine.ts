@@ -73,7 +73,7 @@ export class MarkdownlintEngine implements CodeActionProvider {
       this.outputLine(`Error: lint exception: ${e}`);
     }
 
-    return results;
+    return results || [];
   }
 
   public async provideCodeActions(document: TextDocument, range: Range, context: CodeActionContext) {
@@ -164,7 +164,7 @@ export class MarkdownlintEngine implements CodeActionProvider {
     if (document.languageId !== 'markdown') {
       return;
     }
-    this.diagnosticCollection.clear();
+    this.diagnosticCollection.set(document.uri)
 
     const results = this.markdownlintWrapper(document);
     if (!results.length) {
