@@ -2,7 +2,7 @@ import { TextDocument, CodeAction, CodeActionContext, CodeActionKind, CodeAction
 import extend from 'deep-extend';
 import fs from 'fs';
 import jsYaml from 'js-yaml';
-import markdownlint, { LintError } from 'markdownlint';
+import { LintError, Options, readConfigSync, sync } from 'markdownlint';
 import { applyFix, applyFixes } from 'markdownlint-rule-helpers';
 import path from 'path';
 import rc from 'rc';
@@ -36,7 +36,7 @@ export class MarkdownlintEngine implements CodeActionProvider {
         const fullPath = path.join(workspace.root, projectConfigFile);
         if (fs.existsSync(fullPath)) {
           // @ts-ignore
-          const projectConfig = markdownlint.readConfigSync(fullPath, configFileParsers);
+          const projectConfig = readConfigSync(fullPath, configFileParsers);
           this.config = extend(this.config, projectConfig);
 
           this.outputLine(`Info: local config: ${fullPath}, ${JSON.stringify(projectConfig)}`);
@@ -57,7 +57,7 @@ export class MarkdownlintEngine implements CodeActionProvider {
   }
 
   private markdownlintWrapper(document: TextDocument): LintError[] {
-    const options: markdownlint.Options = {
+    const options: Options = {
       resultVersion: 3,
       config: this.config,
       // customRules: customRules,
@@ -68,9 +68,9 @@ export class MarkdownlintEngine implements CodeActionProvider {
 
     let results: LintError[] = [];
     try {
-      results = markdownlint.sync(options)[document.uri] as LintError[];
+      results = sync(options)[document.uri] as LintError[];
     } catch (e) {
-      this.outputLine(`Error: lint exception: ${e.stack}`);
+      this.outputLine(`Error: lint exception: ${e}`);
     }
 
     return results;
