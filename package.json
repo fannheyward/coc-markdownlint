@@ -314,6 +314,11 @@
                   "description": "Whether to indent the first level of the list",
                   "type": "boolean",
                   "default": false
+                },
+                "start_indent": {
+                  "description": "Spaces for first level indent (when start_indented is set)",
+                  "type": "integer",
+                  "default": 2
                 }
               },
               "additionalProperties": false
@@ -335,6 +340,11 @@
                   "description": "Whether to indent the first level of the list",
                   "type": "boolean",
                   "default": false
+                },
+                "start_indent": {
+                  "description": "Spaces for first level indent (when start_indented is set)",
+                  "type": "integer",
+                  "default": 2
                 }
               },
               "additionalProperties": false
@@ -1515,6 +1525,90 @@
               },
               "additionalProperties": false
             },
+            "MD049": {
+              "description": "MD049/emphasis-style - Emphasis style should be consistent",
+              "type": [
+                "boolean",
+                "object"
+              ],
+              "default": true,
+              "properties": {
+                "style": {
+                  "description": "Emphasis style should be consistent",
+                  "type": "string",
+                  "enum": [
+                    "consistent",
+                    "asterisk",
+                    "underscore"
+                  ],
+                  "default": "consistent"
+                }
+              },
+              "additionalProperties": false
+            },
+            "emphasis-style": {
+              "description": "MD049/emphasis-style - Emphasis style should be consistent",
+              "type": [
+                "boolean",
+                "object"
+              ],
+              "default": true,
+              "properties": {
+                "style": {
+                  "description": "Emphasis style should be consistent",
+                  "type": "string",
+                  "enum": [
+                    "consistent",
+                    "asterisk",
+                    "underscore"
+                  ],
+                  "default": "consistent"
+                }
+              },
+              "additionalProperties": false
+            },
+            "MD050": {
+              "description": "MD050/strong-style - Strong style should be consistent",
+              "type": [
+                "boolean",
+                "object"
+              ],
+              "default": true,
+              "properties": {
+                "style": {
+                  "description": "Strong style should be consistent",
+                  "type": "string",
+                  "enum": [
+                    "consistent",
+                    "asterisk",
+                    "underscore"
+                  ],
+                  "default": "consistent"
+                }
+              },
+              "additionalProperties": false
+            },
+            "strong-style": {
+              "description": "MD050/strong-style - Strong style should be consistent",
+              "type": [
+                "boolean",
+                "object"
+              ],
+              "default": true,
+              "properties": {
+                "style": {
+                  "description": "Strong style should be consistent",
+                  "type": "string",
+                  "enum": [
+                    "consistent",
+                    "asterisk",
+                    "underscore"
+                  ],
+                  "default": "consistent"
+                }
+              },
+              "additionalProperties": false
+            },
             "headings": {
               "description": "headings - MD001, MD002, MD003, MD018, MD019, MD020, MD021, MD022, MD023, MD024, MD025, MD026, MD036, MD041, MD043",
               "type": "boolean",
@@ -1611,7 +1705,7 @@
               "default": true
             },
             "emphasis": {
-              "description": "emphasis - MD036, MD037",
+              "description": "emphasis - MD036, MD037, MD049, MD050",
               "type": "boolean",
               "default": true
             },
