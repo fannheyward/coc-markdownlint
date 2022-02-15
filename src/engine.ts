@@ -47,7 +47,7 @@ export class MarkdownlintEngine implements CodeActionProvider {
       this.outputLine(`Error: local config parse failed: ${e}`);
     }
 
-    const cocConfig = workspace.getConfiguration('markdownlint').get('config');
+    const cocConfig = workspace.getConfiguration('markdownlint').get<{[key:string]:any}>('config');
     if (cocConfig) {
       this.config = extend(this.config, cocConfig);
       this.outputLine(`Info: config from coc-settings.json: ${JSON.stringify(cocConfig)}`);
