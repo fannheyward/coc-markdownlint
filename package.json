@@ -29,7 +29,7 @@
     "@types/rc": "^1.2.1",
     "@typescript-eslint/eslint-plugin": "^5.30.5",
     "@typescript-eslint/parser": "^5.30.5",
-    "coc.nvim": "^0.0.81",
+    "coc.nvim": "^0.0.82",
     "deep-extend": "^0.6.0",
     "esbuild": "^0.14.48",
     "eslint": "^8.19.0",
