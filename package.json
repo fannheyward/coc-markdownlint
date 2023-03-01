@@ -23,7 +23,7 @@
     "url": "https://github.com/fannheyward/coc-markdownlint.git"
   },
   "devDependencies": {
-    "@types/deep-extend": "^0.4.32",
+    "@types/deep-extend": "^0.6.0",
     "@types/js-yaml": "^4.0.5",
     "@types/node": "12.20.55",
     "@types/rc": "^1.2.1",

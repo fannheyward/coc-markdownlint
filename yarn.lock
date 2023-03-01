@@ -177,10 +177,10 @@
   resolved "https://registry.yarnpkg.com/@types/color-name/-/color-name-1.1.1.tgz#1c1261bbeaa10a8055bbc5d8ab84b7b2afc846a0"
   integrity sha512-rr+OQyAjxze7GgWrSaJwydHStIhHq2lvY3BOC2Mj7KnzI7XK0Uw1TOOdI9lDoajEbSWLiYgoo4f1R51erQfhPQ==
 
-"@types/deep-extend@^0.4.32":
-  version "0.4.32"
-  resolved "https://registry.yarnpkg.com/@types/deep-extend/-/deep-extend-0.4.32.tgz#0af51fffde55cb168e8d68f8236908c2cdfe7419"
-  integrity sha512-7/pcMJr5I5OnpWTTfv0o3fJ9+f36EqoQa27/oJlbfvfZAMMrPyU5/+AUC+5OOtTEKdyoW4lAeIBYHtodtEdNUA==
+"@types/deep-extend@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@types/deep-extend/-/deep-extend-0.6.0.tgz#ffcd8f94a47100501c62448aedef5d4fd729042d"
+  integrity sha512-6pXAydWpAHnjte946TN8RDVOyn6Wt6DvuYWT0NJVum8X86CxIROZ2r48GuPxGxO2qYePHL04Fevjsz9+UZ1uYg==
 
 "@types/js-yaml@^4.0.5":
   version "4.0.5"
