@@ -58,4 +58,4 @@ You can configures the markdownlint rules to use, for example:
 MIT
 
 ---
-> This extension is created by [create-coc-extension](https://github.com/fannheyward/create-coc-extension)
+> This extension is created with [create-coc-extension](https://github.com/fannheyward/create-coc-extension)
