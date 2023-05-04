@@ -15,8 +15,8 @@
     "clean": "rimraf lib",
     "lint": "eslint src --ext ts",
     "schema": "node generate-config-schema.js",
-    "build": "node esbuild.js",
-    "prepare": "node esbuild.js"
+    "build": "node esbuild.mjs",
+    "prepare": "node esbuild.mjs"
   },
   "repository": {
     "type": "git",
