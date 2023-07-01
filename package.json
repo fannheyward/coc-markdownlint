@@ -31,7 +31,7 @@
     "@typescript-eslint/parser": "^5.57.1",
     "coc.nvim": "^0.0.82",
     "deep-extend": "^0.6.0",
-    "esbuild": "^0.17.5",
+    "esbuild": "^0.18.11",
     "eslint": "^8.19.0",
     "js-yaml": "^4.1.0",
     "markdownlint": "^0.28.0",
