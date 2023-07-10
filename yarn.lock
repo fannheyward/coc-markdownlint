@@ -944,10 +944,10 @@ markdownlint-micromark@0.1.5:
   resolved "https://registry.yarnpkg.com/markdownlint-micromark/-/markdownlint-micromark-0.1.5.tgz#a23400b101be32cd4336f2b6b4c47da31825524c"
   integrity sha512-HvofNU4QCvfUCWnocQP1IAWaqop5wpWrB0mKB6SSh0fcpV0PdmQNS6tdUuFew1utpYlUvYYzz84oDkrD76GB9A==
 
-markdownlint-rule-helpers@^0.19.0:
-  version "0.19.0"
-  resolved "https://registry.yarnpkg.com/markdownlint-rule-helpers/-/markdownlint-rule-helpers-0.19.0.tgz#0924be6b58fe2b0fe5a31077b810f2fbeb841485"
-  integrity sha512-hXx0ZsXtNwyeFg02ImUhGjBmv/MDILKtcgpU+ur3WazJBv6dxaVzq9GEjVb+u3zoFE9+PURRIttVUIPA43dLpQ==
+markdownlint-rule-helpers@^0.20.0:
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/markdownlint-rule-helpers/-/markdownlint-rule-helpers-0.20.0.tgz#c61bc7708f72891fb0eb1c1a93caf4c61788d009"
+  integrity sha512-9pPhgNcJmPCoFS+6aos0L/2tRSji8++7OLMlQZs0vsU23yj2/5m6IYxOLlbiPL13Z4MJ5RQLIbnEs3UZPcD11g==
   dependencies:
     markdownlint-micromark "0.1.2"
 
