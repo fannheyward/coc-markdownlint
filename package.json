@@ -34,8 +34,8 @@
     "esbuild": "^0.19.2",
     "eslint": "^8.19.0",
     "js-yaml": "^4.1.0",
-    "markdownlint": "^0.29.0",
-    "markdownlint-rule-helpers": "^0.20.0",
+    "markdownlint": "^0.30.0",
+    "markdownlint-rule-helpers": "^0.21.0",
     "rc": "^1.2.8",
     "rimraf": "^5.0.0",
     "typescript": "^5.0.3"
