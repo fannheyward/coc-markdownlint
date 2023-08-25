@@ -5,5 +5,25 @@ updates:
   directory: "/"
   schedule:
     interval: monthly
+  groups:
+    dev-dependencies-markdownlint:
+      patterns:
+      - "markdownlint"
+      - "markdownlint-rule-helpers"
+    dev-dependencies-ts-eslint:
+      patterns:
+      - "@typescript-eslint/*"
+    dev-dependencies-js-yaml:
+      patterns:
+      - "@types/js-yaml"
+      - "js-yaml"
+    dev-dependencies-deep-extend:
+      patterns:
+      - "@types/deep-extend"
+      - "deep-extend"
+    dev-dependencies-rc:
+      patterns:
+      - "@types/rc"
+      - "rc"
   reviewers:
   - fannheyward
