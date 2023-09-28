@@ -32,8 +32,8 @@
     "deep-extend": "^0.6.0",
     "esbuild": "^0.19.2",
     "js-yaml": "^4.1.0",
-    "markdownlint": "^0.30.0",
-    "markdownlint-rule-helpers": "^0.21.0",
+    "markdownlint": "^0.31.1",
+    "markdownlint-rule-helpers": "^0.22.0",
     "rc": "^1.2.8",
     "typescript": "^5.0.3"
   },
