@@ -1,21 +1,36 @@
-import { TextDocument, CodeAction, CodeActionContext, CodeActionKind, CodeActionProvider, Diagnostic, DiagnosticSeverity, languages, Position, Range, TextEdit, window, workspace, WorkspaceEdit } from 'coc.nvim';
-import extend from 'deep-extend';
-import fs from 'fs';
-import jsYaml from 'js-yaml';
-import { LintError, Options, readConfigSync, sync } from 'markdownlint';
-import { applyFix, applyFixes } from 'markdownlint-rule-helpers';
-import path from 'path';
-import rc from 'rc';
+import {
+  CodeAction,
+  CodeActionContext,
+  CodeActionKind,
+  CodeActionProvider,
+  Diagnostic,
+  DiagnosticSeverity,
+  Position,
+  Range,
+  TextDocument,
+  TextEdit,
+  WorkspaceEdit,
+  languages,
+  window,
+  workspace,
+} from "coc.nvim";
+import extend from "deep-extend";
+import fs from "fs";
+import jsYaml from "js-yaml";
+import { LintError, Options, readConfigSync, sync } from "markdownlint";
+import { applyFix, applyFixes } from "markdownlint-rule-helpers";
+import path from "path";
+import rc from "rc";
 
-const projectConfigFiles = ['.markdownlint.json', '.markdownlint.yaml', '.markdownlint.yml'];
+const projectConfigFiles = [".markdownlint.json", ".markdownlint.yaml", ".markdownlint.yml"];
 const configFileParsers = [JSON.parse, jsYaml.load];
 
 export class MarkdownlintEngine implements CodeActionProvider {
-  public readonly fixAllCommandName = 'markdownlint.fixAll';
-  private readonly source = 'markdownlint';
+  public readonly fixAllCommandName = "markdownlint.fixAll";
+  private readonly source = "markdownlint";
   private outputChannel = window.createOutputChannel(this.source);
   private diagnosticCollection = languages.createDiagnosticCollection(this.source);
-  private config: { [key: string]: any } = {};
+  private config: { [key: string]: unknown } = {};
 
   private outputLine(message: string) {
     if (this.outputChannel) {
@@ -47,7 +62,7 @@ export class MarkdownlintEngine implements CodeActionProvider {
       this.outputLine(`Error: local config parse failed: ${e}`);
     }
 
-    const cocConfig = workspace.getConfiguration('markdownlint').get<{[key:string]:any}>('config');
+    const cocConfig = workspace.getConfiguration("markdownlint").get<{ [key: string]: unknown }>("config");
     if (cocConfig) {
       this.config = extend(this.config, cocConfig);
       this.outputLine(`Info: config from coc-settings.json: ${JSON.stringify(cocConfig)}`);
@@ -80,7 +95,12 @@ export class MarkdownlintEngine implements CodeActionProvider {
     const doc = workspace.getDocument(document.uri);
     const wholeRange = Range.create(0, 0, doc.lineCount, 0);
     let whole = false;
-    if (range.start.line === wholeRange.start.line && range.start.character === wholeRange.start.character && range.end.line === wholeRange.end.line && range.end.character === wholeRange.end.character) {
+    if (
+      range.start.line === wholeRange.start.line &&
+      range.start.character === wholeRange.start.character &&
+      range.end.line === wholeRange.end.line &&
+      range.end.character === wholeRange.end.character
+    ) {
       whole = true;
     }
     const codeActions: CodeAction[] = [];
@@ -92,17 +112,19 @@ export class MarkdownlintEngine implements CodeActionProvider {
         const lineNumber = diagnostic.fixInfo.lineNumber - 1 || diagnostic.range.start.line;
         const line = await workspace.getLine(document.uri, lineNumber);
         // @ts-ignore
-        const newText = applyFix(line, diagnostic.fixInfo, '\n');
+        const newText = applyFix(line, diagnostic.fixInfo, "\n");
 
         const edit: WorkspaceEdit = { changes: {} };
-        if (typeof newText === 'string') {
+        if (typeof newText === "string") {
           const range = Range.create(lineNumber, 0, lineNumber, line.length);
+          // biome-ignore lint/style/noNonNullAssertion: <explanation>
           edit.changes![document.uri] = [TextEdit.replace(range, newText)];
         } else {
+          // biome-ignore lint/style/noNonNullAssertion: <explanation>
           edit.changes![document.uri] = [TextEdit.del(diagnostic.range)];
         }
 
-        const title = `Fix: ${diagnostic.message.split(':')[0]}`;
+        const title = `Fix: ${diagnostic.message.split(":")[0]}`;
         const action: CodeAction = {
           title,
           edit,
@@ -118,32 +140,32 @@ export class MarkdownlintEngine implements CodeActionProvider {
 
     if (range.start.line === range.end.line && range.start.character === 0) {
       // <!-- markdownlint-disable-next-line -->
-      const edit = TextEdit.insert(Position.create(range.start.line, 0), '<!-- markdownlint-disable-next-line -->\n')
+      const edit = TextEdit.insert(Position.create(range.start.line, 0), "<!-- markdownlint-disable-next-line -->\n");
       codeActions.push({
-        title: 'Disable markdownlint for current line',
+        title: "Disable markdownlint for current line",
         edit: {
           changes: {
-            [doc.uri]: [edit]
-          }
-        }
-      })
+            [doc.uri]: [edit],
+          },
+        },
+      });
     }
 
     if (whole) {
       // <!-- markdownlint-disable-file -->
-      const edit = TextEdit.insert(Position.create(0, 0), '<!-- markdownlint-disable-file -->\n')
+      const edit = TextEdit.insert(Position.create(0, 0), "<!-- markdownlint-disable-file -->\n");
       codeActions.push({
-        title: 'Disable markdownlint for current file',
+        title: "Disable markdownlint for current file",
         edit: {
           changes: {
-            [doc.uri]: [edit]
-          }
-        }
-      })
+            [doc.uri]: [edit],
+          },
+        },
+      });
     }
 
     if (fixInfoDiagnostics.length) {
-      const title = 'Fix All error found by markdownlint';
+      const title = "Fix All error found by markdownlint";
       const sourceFixAllAction: CodeAction = {
         title,
         kind: CodeActionKind.SourceFixAll,
@@ -161,10 +183,10 @@ export class MarkdownlintEngine implements CodeActionProvider {
   }
 
   public lint(document: TextDocument) {
-    if (document.languageId !== 'markdown') {
+    if (document.languageId !== "markdown") {
       return;
     }
-    this.diagnosticCollection.set(document.uri)
+    this.diagnosticCollection.set(document.uri);
 
     const results = this.markdownlintWrapper(document);
     if (!results.length) {
@@ -174,9 +196,9 @@ export class MarkdownlintEngine implements CodeActionProvider {
     const diagnostics: Diagnostic[] = [];
     results.forEach((result: LintError) => {
       const ruleDescription = result.ruleDescription;
-      let message = result.ruleNames.join('/') + ': ' + ruleDescription;
+      let message = `${result.ruleNames.join("/")}: ${ruleDescription}`;
       if (result.errorDetail) {
-        message += ' [' + result.errorDetail + ']';
+        message += ` [${result.errorDetail}]`;
       }
 
       const start = Position.create(result.lineNumber - 1, 0);
@@ -206,7 +228,7 @@ export class MarkdownlintEngine implements CodeActionProvider {
 
     const text = document.getText();
     const fixedText = applyFixes(text, results);
-    if (text != fixedText) {
+    if (text !== fixedText) {
       const doc = workspace.getDocument(document.uri);
       const end = Position.create(doc.lineCount - 1, doc.getline(doc.lineCount - 1).length);
       const edit: WorkspaceEdit = {

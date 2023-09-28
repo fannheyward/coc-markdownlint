@@ -12,3 +12,4 @@ ok.md
 .github
 .eslintrc.js
 esbuild.js
+biome.json

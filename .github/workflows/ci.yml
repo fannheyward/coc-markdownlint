@@ -35,3 +35,6 @@ jobs:
       - name: yarn lint
         run: |
           yarn lint
+      - name: yarn format
+        run: |
+          yarn rmt

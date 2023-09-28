@@ -1,29 +1,38 @@
-import { commands, DidChangeTextDocumentParams, Document, DocumentFilter, ExtensionContext, languages, TextDocument, workspace } from 'coc.nvim';
-import { MarkdownlintEngine } from './engine';
+import {
+  DidChangeTextDocumentParams,
+  Document,
+  DocumentFilter,
+  ExtensionContext,
+  TextDocument,
+  commands,
+  languages,
+  workspace,
+} from "coc.nvim";
+import { MarkdownlintEngine } from "./engine";
 
 const documentSelector: DocumentFilter[] = [
   {
-    language: 'markdown',
-    scheme: 'file',
+    language: "markdown",
+    scheme: "file",
   },
   {
-    language: 'markdown',
-    scheme: 'untitled',
+    language: "markdown",
+    scheme: "untitled",
   },
 ];
 
 let documentVersion = 0;
 const engine = new MarkdownlintEngine();
-const config = workspace.getConfiguration('markdownlint');
+const config = workspace.getConfiguration("markdownlint");
 
 function didOpenTextDocument(document: TextDocument) {
-  if (config.get('onOpen', true)) {
+  if (config.get("onOpen", true)) {
     engine.lint(document);
   }
 }
 
 async function didChangeTextDocument(params: DidChangeTextDocumentParams) {
-  if (!config.get<boolean>('onChange', true)) {
+  if (!config.get<boolean>("onChange", true)) {
     return;
   }
 
@@ -35,7 +44,7 @@ async function didChangeTextDocument(params: DidChangeTextDocumentParams) {
 }
 
 async function didSaveTextDocument(document: TextDocument) {
-  if (config.get<boolean>('onSave', true)) {
+  if (config.get<boolean>("onSave", true)) {
     engine.lint(document);
   }
 }
@@ -44,7 +53,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
   await engine.parseConfig();
 
   context.subscriptions.push(
-    languages.registerCodeActionProvider(documentSelector, engine, 'markdownlint'),
+    languages.registerCodeActionProvider(documentSelector, engine, "markdownlint"),
     commands.registerCommand(engine.fixAllCommandName, async () => {
       const { document } = await workspace.getCurrentState();
       engine.fixAll(document);

@@ -1,1 +1,1 @@
-declare module 'markdownlint-rule-helpers';
+declare module "markdownlint-rule-helpers";

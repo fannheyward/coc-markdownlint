@@ -8,7 +8,7 @@ const options = {
   mainFields: ['module', 'main'],
   external: ['coc.nvim'],
   platform: 'node',
-  target: 'node14.14',
+  target: 'node16.18',
   outfile: 'lib/index.js',
 };
 

@@ -12,8 +12,8 @@
     "coc": "^0.0.80"
   },
   "scripts": {
-    "clean": "rimraf lib",
-    "lint": "eslint src --ext ts",
+    "lint": "biome check src/*.ts",
+    "fmt": "biome format --write src/*.ts",
     "schema": "node generate-config-schema.js",
     "build": "node esbuild.mjs",
     "prepare": "node esbuild.mjs"
@@ -23,21 +23,18 @@
     "url": "https://github.com/fannheyward/coc-markdownlint.git"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.2.2",
     "@types/deep-extend": "^0.6.0",
     "@types/js-yaml": "^4.0.5",
-    "@types/node": "20",
+    "@types/node": "16",
     "@types/rc": "^1.2.1",
-    "@typescript-eslint/eslint-plugin": "^6.4.1",
-    "@typescript-eslint/parser": "^6.4.1",
-    "coc.nvim": "^0.0.82",
+    "coc.nvim": "^0.0.83-next.18",
     "deep-extend": "^0.6.0",
     "esbuild": "^0.19.2",
-    "eslint": "^8.19.0",
     "js-yaml": "^4.1.0",
     "markdownlint": "^0.30.0",
     "markdownlint-rule-helpers": "^0.21.0",
     "rc": "^1.2.8",
-    "rimraf": "^5.0.0",
     "typescript": "^5.0.3"
   },
   "activationEvents": [
