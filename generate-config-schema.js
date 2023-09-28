@@ -18,5 +18,3 @@ configurationSchema.properties = properties;
 const configurationRoot = packageJson.contributes.configuration.properties["markdownlint.config"];
 configurationRoot.properties = configurationSchema.properties;
 fs.writeFileSync(packageJsonPath, `${JSON.stringify(packageJson, null, 2)}\n`);
-
-fs.writeFileSync("./schemas/markdownlint-config-schema.json", `${JSON.stringify(configurationSchema, null, 2)}\n`);

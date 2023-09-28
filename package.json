@@ -45,7 +45,7 @@
     "jsonValidation": [
       {
         "fileMatch": ".markdownlint.json",
-        "url": "./schemas/markdownlint-config-schema.json"
+        "url": "https://raw.githubusercontent.com/DavidAnson/markdownlint/main/schema/markdownlint-config-schema.json"
       }
     ],
     "snippets": [
@@ -692,14 +692,26 @@
               "properties": {
                 "lines_above": {
                   "description": "Blank lines above heading",
-                  "type": "integer",
-                  "minimum": 0,
+                  "type": [
+                    "integer",
+                    "array"
+                  ],
+                  "items": {
+                    "type": "integer"
+                  },
+                  "minimum": -1,
                   "default": 1
                 },
                 "lines_below": {
                   "description": "Blank lines below heading",
-                  "type": "integer",
-                  "minimum": 0,
+                  "type": [
+                    "integer",
+                    "array"
+                  ],
+                  "items": {
+                    "type": "integer"
+                  },
+                  "minimum": -1,
                   "default": 1
                 }
               },
@@ -715,14 +727,26 @@
               "properties": {
                 "lines_above": {
                   "description": "Blank lines above heading",
-                  "type": "integer",
-                  "minimum": 0,
+                  "type": [
+                    "integer",
+                    "array"
+                  ],
+                  "items": {
+                    "type": "integer"
+                  },
+                  "minimum": -1,
                   "default": 1
                 },
                 "lines_below": {
                   "description": "Blank lines below heading",
-                  "type": "integer",
-                  "minimum": 0,
+                  "type": [
+                    "integer",
+                    "array"
+                  ],
+                  "items": {
+                    "type": "integer"
+                  },
+                  "minimum": -1,
                   "default": 1
                 }
               },
@@ -738,14 +762,26 @@
               "properties": {
                 "lines_above": {
                   "description": "Blank lines above heading",
-                  "type": "integer",
-                  "minimum": 0,
+                  "type": [
+                    "integer",
+                    "array"
+                  ],
+                  "items": {
+                    "type": "integer"
+                  },
+                  "minimum": -1,
                   "default": 1
                 },
                 "lines_below": {
                   "description": "Blank lines below heading",
-                  "type": "integer",
-                  "minimum": 0,
+                  "type": [
+                    "integer",
+                    "array"
+                  ],
+                  "items": {
+                    "type": "integer"
+                  },
+                  "minimum": -1,
                   "default": 1
                 }
               },
@@ -907,7 +943,7 @@
               "default": true,
               "properties": {
                 "punctuation": {
-                  "description": "Punctuation characters not allowed at end of headings",
+                  "description": "Punctuation characters",
                   "type": "string",
                   "default": ".,;:!。，；：！"
                 }
@@ -923,7 +959,7 @@
               "default": true,
               "properties": {
                 "punctuation": {
-                  "description": "Punctuation characters not allowed at end of headings",
+                  "description": "Punctuation characters",
                   "type": "string",
                   "default": ".,;:!。，；：！"
                 }
@@ -1664,7 +1700,7 @@
               "default": true,
               "properties": {
                 "style": {
-                  "description": "Emphasis style should be consistent",
+                  "description": "Emphasis style",
                   "type": "string",
                   "enum": [
                     "consistent",
@@ -1685,7 +1721,7 @@
               "default": true,
               "properties": {
                 "style": {
-                  "description": "Emphasis style should be consistent",
+                  "description": "Emphasis style",
                   "type": "string",
                   "enum": [
                     "consistent",
@@ -1706,7 +1742,7 @@
               "default": true,
               "properties": {
                 "style": {
-                  "description": "Strong style should be consistent",
+                  "description": "Strong style",
                   "type": "string",
                   "enum": [
                     "consistent",
@@ -1727,7 +1763,7 @@
               "default": true,
               "properties": {
                 "style": {
-                  "description": "Strong style should be consistent",
+                  "description": "Strong style",
                   "type": "string",
                   "enum": [
                     "consistent",
@@ -1751,13 +1787,35 @@
             },
             "MD052": {
               "description": "MD052/reference-links-images - Reference links and images should use a label that is defined",
-              "type": "boolean",
-              "default": true
+              "type": [
+                "boolean",
+                "object"
+              ],
+              "default": true,
+              "properties": {
+                "shortcut_syntax": {
+                  "description": "Include shortcut syntax",
+                  "type": "boolean",
+                  "default": false
+                }
+              },
+              "additionalProperties": false
             },
             "reference-links-images": {
               "description": "MD052/reference-links-images - Reference links and images should use a label that is defined",
-              "type": "boolean",
-              "default": true
+              "type": [
+                "boolean",
+                "object"
+              ],
+              "default": true,
+              "properties": {
+                "shortcut_syntax": {
+                  "description": "Include shortcut syntax",
+                  "type": "boolean",
+                  "default": false
+                }
+              },
+              "additionalProperties": false
             },
             "MD053": {
               "description": "MD053/link-image-reference-definitions - Link and image reference definitions should be needed",
