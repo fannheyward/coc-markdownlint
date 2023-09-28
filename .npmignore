@@ -12,4 +12,7 @@ ok.md
 .github
 .eslintrc.js
 esbuild.js
+esbuild.mjs
 biome.json
+CONTRIBUTING.md
+generate-config-schema.js
