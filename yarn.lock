@@ -175,9 +175,9 @@
   integrity sha512-oTmGy68gxZZ21FhTJVVvZBYpQHEBZxHKTsGshobMqm9qWpbqdZsA5jvsuPZcHu0KwpmLrOHWPdEfg7XDpNT9UA==
 
 "@types/rc@^1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@types/rc/-/rc-1.2.1.tgz#d2d0c2778b2a54fffe018f69b5091b4936ca7263"
-  integrity sha512-+TRLFmHLnpoV0uw4O/PzqMbPT6bhQM0q2KO0l+R7M3sHYRndPpNL6kv8p7Ee9ZxgQ6noYB18/t+heQi7eijOHA==
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@types/rc/-/rc-1.2.2.tgz#1f524a9ce38483c3359a0ccc36ae8342db63262c"
+  integrity sha512-rzxU1jGB2r1b25MFaybykVTfuZwOvJegM6x/NgxXVjEKv9N3LNRHqitnTCtdWy9fiMIC9enRzWChJTsb+sFUOA==
   dependencies:
     "@types/minimist" "*"
 
