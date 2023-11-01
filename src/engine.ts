@@ -194,7 +194,7 @@ export class MarkdownlintEngine implements CodeActionProvider {
     }
 
     const diagnostics: Diagnostic[] = [];
-    results.forEach((result: LintError) => {
+    for (const result of results) {
       const ruleDescription = result.ruleDescription;
       let message = `${result.ruleNames.join("/")}: ${ruleDescription}`;
       if (result.errorDetail) {
@@ -215,7 +215,7 @@ export class MarkdownlintEngine implements CodeActionProvider {
       // @ts-ignore
       diagnostic.fixInfo = result.fixInfo;
       diagnostics.push(diagnostic);
-    });
+    }
 
     this.diagnosticCollection.set(document.uri, diagnostics);
   }
