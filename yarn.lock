@@ -155,9 +155,9 @@
   integrity sha512-czTrygUsB/jlM8qEW5MD8bgYU2Xg14lo6kBDXW6HdxKjh8M5PzETGiSHaz9MtbXBYDloHNUAUW2tMiKW4KM9Mw==
 
 "@types/deep-extend@^0.6.0":
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@types/deep-extend/-/deep-extend-0.6.0.tgz#ffcd8f94a47100501c62448aedef5d4fd729042d"
-  integrity sha512-6pXAydWpAHnjte946TN8RDVOyn6Wt6DvuYWT0NJVum8X86CxIROZ2r48GuPxGxO2qYePHL04Fevjsz9+UZ1uYg==
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@types/deep-extend/-/deep-extend-0.6.1.tgz#6bb83c3d114e628ea445dd6bf71ef681b2920d2d"
+  integrity sha512-39Omxc04OYjUqFksYhqwTxKommUpfponSiV0nDu79wOGeo8VYImwE6xm3lsChjpCSiqNRckIdO2/U9CKeJs/HQ==
 
 "@types/js-yaml@^4.0.5":
   version "4.0.6"
