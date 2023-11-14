@@ -38,8 +38,7 @@
     "typescript": "^5.0.3"
   },
   "activationEvents": [
-    "onLanguage:markdown",
-    "onCommand:markdownlint.fixLine"
+    "onLanguage:markdown"
   ],
   "contributes": {
     "jsonValidation": [
