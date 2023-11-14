@@ -248,10 +248,10 @@ linkify-it@^4.0.1:
   dependencies:
     uc.micro "^1.0.1"
 
-markdown-it@13.0.1:
-  version "13.0.1"
-  resolved "https://registry.yarnpkg.com/markdown-it/-/markdown-it-13.0.1.tgz#c6ecc431cacf1a5da531423fc6a42807814af430"
-  integrity sha512-lTlxriVoy2criHP0JKRhO2VDG9c2ypWCsT237eDiLqi09rmbKoUetyGHq2uOIRoRS//kfoJckS0eUzzkDR+k2Q==
+markdown-it@13.0.2:
+  version "13.0.2"
+  resolved "https://registry.yarnpkg.com/markdown-it/-/markdown-it-13.0.2.tgz#1bc22e23379a6952e5d56217fbed881e0c94d536"
+  integrity sha512-FtwnEuuK+2yVU7goGn/MJ0WBZMM9ZPgU9spqlFs7/A/pDIUNSOQZhUgOqYCficIuR2QaFnrt8LHqBWsbTAoI5w==
   dependencies:
     argparse "^2.0.1"
     entities "~3.0.1"
@@ -269,19 +269,19 @@ markdownlint-micromark@0.1.7:
   resolved "https://registry.yarnpkg.com/markdownlint-micromark/-/markdownlint-micromark-0.1.7.tgz#c465091b30d61a56027ccbfb981c80c96448c165"
   integrity sha512-BbRPTC72fl5vlSKv37v/xIENSRDYL/7X/XoFzZ740FGEbs9vZerLrIkFRY0rv7slQKxDczToYuMmqQFN61fi4Q==
 
-markdownlint-rule-helpers@^0.22.0:
-  version "0.22.0"
-  resolved "https://registry.yarnpkg.com/markdownlint-rule-helpers/-/markdownlint-rule-helpers-0.22.0.tgz#5b1b64af6f35f4519916913a6f651b6a58cb71ed"
-  integrity sha512-fYZ68UFpMYXeaQ0BC7xkij1iJd57tqfO5koPc92kDegZDoHq692UqSwxpfcf4i+SnL134sLIlBHrOxXnLmfvsQ==
+markdownlint-rule-helpers@^0.23.0:
+  version "0.23.0"
+  resolved "https://registry.yarnpkg.com/markdownlint-rule-helpers/-/markdownlint-rule-helpers-0.23.0.tgz#5438324cdf44849dcb3bcde68ba965d1f3e1e45e"
+  integrity sha512-fU1sXeies+XdURdAGp3qRmhGtUPvXOdFhM0xgwWG4doePdCpRPxkF/JetRQ7ODGwoqgtCX4/rw0MI4m65U4IqA==
   dependencies:
     markdownlint-micromark "0.1.2"
 
-markdownlint@^0.31.1:
-  version "0.31.1"
-  resolved "https://registry.yarnpkg.com/markdownlint/-/markdownlint-0.31.1.tgz#f014ed2d3614c5dbc351b7f65641ccc0a5facdb7"
-  integrity sha512-CKMR2hgcIBrYlIUccDCOvi966PZ0kJExDrUi1R+oF9PvqQmCrTqjOsgIvf2403OmJ+CWomuzDoylr6KbuMyvHA==
+markdownlint@^0.32.0:
+  version "0.32.0"
+  resolved "https://registry.yarnpkg.com/markdownlint/-/markdownlint-0.32.0.tgz#71160d0a98d3b05f96bebdcacc919fbfaf58b219"
+  integrity sha512-DIA2LclWqWmyU1Z73mTYa9/oilWJGdCW+tiPpziwmut/O7LxmEI8xKeg3vhEezXOyMaTV76HSX3/HmypRC2/8w==
   dependencies:
-    markdown-it "13.0.1"
+    markdown-it "13.0.2"
     markdownlint-micromark "0.1.7"
 
 mdurl@^1.0.1:
