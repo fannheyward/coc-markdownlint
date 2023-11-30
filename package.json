@@ -1,6 +1,6 @@
 {
   "name": "coc-markdownlint",
-  "version": "1.32.0",
+  "version": "1.32.1",
   "description": "Markdownlint extension for coc.nvim",
   "author": "Heyward Fann <fannheyward@gmail.com>",
   "license": "MIT",
