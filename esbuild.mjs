@@ -1,21 +1,21 @@
-import * as esbuild from 'esbuild';
+import * as esbuild from "esbuild";
 
 const options = {
-  entryPoints: ['src/index.ts'],
+  entryPoints: ["src/index.ts"],
   bundle: true,
-  minify: process.env.NODE_ENV === 'production',
-  sourcemap: process.env.NODE_ENV === 'development',
-  mainFields: ['module', 'main'],
-  external: ['coc.nvim'],
-  platform: 'node',
-  target: 'node16.18',
-  outfile: 'lib/index.js',
+  minify: true,
+  sourcemap: process.env.NODE_ENV === "development",
+  mainFields: ["module", "main"],
+  external: ["coc.nvim"],
+  platform: "node",
+  target: "node16.18",
+  outfile: "lib/index.js",
 };
 
-if (process.argv.length > 2 && process.argv[2] === '--watch') {
+if (process.argv.length > 2 && process.argv[2] === "--watch") {
   const ctx = await esbuild.context(options);
   await ctx.watch();
-  console.log('watching...');
+  console.log("watching...");
 } else {
   const result = await esbuild.build(options);
   if (result.errors.length) {
