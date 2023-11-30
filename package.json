@@ -13,7 +13,7 @@
   },
   "scripts": {
     "lint": "biome check src/*.ts",
-    "fmt": "biome format --write src/*.ts",
+    "format": "biome format --write src/*.ts",
     "schema": "node generate-config-schema.js",
     "build": "node esbuild.mjs",
     "prepare": "node esbuild.mjs"
