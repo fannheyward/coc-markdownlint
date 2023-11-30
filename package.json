@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/fannheyward/coc-markdownlint.git"
+    "url": "git+https://github.com/fannheyward/coc-markdownlint.git"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.4.0",
