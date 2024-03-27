@@ -1,6 +1,6 @@
 // via https://github.com/DavidAnson/vscode-markdownlint/blob/master/generate-config-schema.js
 
-const fs = require("fs");
+const fs = require("node:fs");
 const packageJsonPath = "./package.json";
 const packageJson = require(packageJsonPath);
 const configurationSchema = require("./node_modules/markdownlint/schema/markdownlint-config-schema.json");

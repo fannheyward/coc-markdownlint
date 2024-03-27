@@ -1,25 +1,25 @@
 import {
-  CodeAction,
-  CodeActionContext,
+  type CodeAction,
+  type CodeActionContext,
   CodeActionKind,
-  CodeActionProvider,
+  type CodeActionProvider,
   Diagnostic,
   DiagnosticSeverity,
   Position,
   Range,
-  TextDocument,
+  type TextDocument,
   TextEdit,
-  WorkspaceEdit,
+  type WorkspaceEdit,
   languages,
   window,
   workspace,
 } from "coc.nvim";
 import extend from "deep-extend";
-import fs from "fs";
+import fs from "node:fs";
 import jsYaml from "js-yaml";
-import { LintError, Options, readConfigSync, sync } from "markdownlint";
+import { type LintError, type Options, readConfigSync, sync } from "markdownlint";
 import { applyFix, applyFixes } from "markdownlint-rule-helpers";
-import path from "path";
+import path from "node:path";
 import rc from "rc";
 
 const projectConfigFiles = [".markdownlint.json", ".markdownlint.yaml", ".markdownlint.yml"];

@@ -23,7 +23,7 @@
     "url": "git+https://github.com/fannheyward/coc-markdownlint.git"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.5.0",
+    "@biomejs/biome": "^1.6.3",
     "@types/deep-extend": "^0.6.2",
     "@types/js-yaml": "^4.0.9",
     "@types/node": "16",
