@@ -30,7 +30,7 @@
     "@types/rc": "^1.2.4",
     "coc.nvim": "^0.0.83-next.18",
     "deep-extend": "^0.6.0",
-    "esbuild": "^0.23.0",
+    "esbuild": "^0.24.0",
     "js-yaml": "^4.1.0",
     "markdownlint": "^0.35.0",
     "markdownlint-rule-helpers": "^0.26.0",
