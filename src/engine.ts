@@ -17,8 +17,7 @@ import {
 import extend from "deep-extend";
 import fs from "node:fs";
 import jsYaml from "js-yaml";
-import { type LintError, type Options, readConfigSync, sync } from "markdownlint";
-import { applyFix, applyFixes } from "markdownlint-rule-helpers";
+import { applyFix, applyFixes, type LintError, type Options, readConfigSync, sync } from "markdownlint";
 import path from "node:path";
 import rc from "rc";
 
