@@ -6,13 +6,6 @@ updates:
   schedule:
     interval: monthly
   groups:
-    dev-dependencies-markdownlint:
-      patterns:
-      - "markdownlint"
-      - "markdownlint-rule-helpers"
-    dev-dependencies-ts-eslint:
-      patterns:
-      - "@typescript-eslint/*"
     dev-dependencies-js-yaml:
       patterns:
       - "@types/js-yaml"
