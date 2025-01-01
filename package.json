@@ -32,7 +32,7 @@
     "deep-extend": "^0.6.0",
     "esbuild": "^0.24.0",
     "js-yaml": "^4.1.0",
-    "markdownlint": "^0.36.1",
+    "markdownlint": "^0.37.3",
     "rc": "^1.2.8",
     "typescript": "^5.3.3"
   },
