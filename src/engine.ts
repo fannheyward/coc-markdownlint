@@ -92,6 +92,9 @@ export class MarkdownlintEngine implements CodeActionProvider {
 
   public async provideCodeActions(document: TextDocument, range: Range, context: CodeActionContext) {
     const doc = workspace.getDocument(document.uri);
+    if (!doc) {
+      return [];
+    }
     const wholeRange = Range.create(0, 0, doc.lineCount, 0);
     let whole = false;
     if (
@@ -229,6 +232,9 @@ export class MarkdownlintEngine implements CodeActionProvider {
     const fixedText = applyFixes(text, results);
     if (text !== fixedText) {
       const doc = workspace.getDocument(document.uri);
+      if (!doc) {
+        return;
+      }
       const end = Position.create(doc.lineCount - 1, doc.getline(doc.lineCount - 1).length);
       const edit: WorkspaceEdit = {
         changes: {
