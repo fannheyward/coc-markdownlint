@@ -119,10 +119,10 @@ export class MarkdownlintEngine implements CodeActionProvider {
         const edit: WorkspaceEdit = { changes: {} };
         if (typeof newText === "string") {
           const range = Range.create(lineNumber, 0, lineNumber, line.length);
-          // biome-ignore lint/style/noNonNullAssertion: <explanation>
+          // biome-ignore lint/style/noNonNullAssertion: x
           edit.changes![document.uri] = [TextEdit.replace(range, newText)];
         } else {
-          // biome-ignore lint/style/noNonNullAssertion: <explanation>
+          // biome-ignore lint/style/noNonNullAssertion: x
           edit.changes![document.uri] = [TextEdit.del(diagnostic.range)];
         }
 
