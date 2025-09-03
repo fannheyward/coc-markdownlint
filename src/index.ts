@@ -1,6 +1,5 @@
 import {
   type DidChangeTextDocumentParams,
-  type Document,
   type DocumentFilter,
   type ExtensionContext,
   type TextDocument,
@@ -64,7 +63,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
     workspace.onDidSaveTextDocument(didSaveTextDocument),
   );
 
-  workspace.documents.map((doc: Document) => {
+  workspace.documents.forEach((doc) => {
     didOpenTextDocument(doc.textDocument);
   });
 }
