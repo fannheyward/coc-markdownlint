@@ -49,7 +49,7 @@ export class MarkdownlintEngine implements CodeActionProvider {
       for (const projectConfigFile of projectConfigFiles) {
         const fullPath = path.join(workspace.root, projectConfigFile);
         if (fs.existsSync(fullPath)) {
-          // @ts-ignore
+          // @ts-expect-error
           const projectConfig = readConfigSync(fullPath, configFileParsers);
           this.config = extend(this.config, projectConfig);
 
@@ -108,12 +108,12 @@ export class MarkdownlintEngine implements CodeActionProvider {
     const codeActions: CodeAction[] = [];
     const fixInfoDiagnostics: Diagnostic[] = [];
     for (const diagnostic of context.diagnostics) {
-      // @ts-ignore
+      // @ts-expect-error
       if (diagnostic.fixInfo) {
-        // @ts-ignore
+        // @ts-expect-error
         const lineNumber = diagnostic.fixInfo.lineNumber - 1 || diagnostic.range.start.line;
         const line = await workspace.getLine(document.uri, lineNumber);
-        // @ts-ignore
+        // @ts-expect-error
         const newText = applyFix(line, diagnostic.fixInfo, "\n");
 
         const edit: WorkspaceEdit = { changes: {} };
@@ -214,7 +214,7 @@ export class MarkdownlintEngine implements CodeActionProvider {
       const diagnostic = Diagnostic.create(range, message);
       diagnostic.severity = DiagnosticSeverity.Warning;
       diagnostic.source = this.source;
-      // @ts-ignore
+      // @ts-expect-error
       diagnostic.fixInfo = result.fixInfo;
       diagnostics.push(diagnostic);
     }
