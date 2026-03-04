@@ -17,12 +17,25 @@ import {
 import extend from "deep-extend";
 import fs from "node:fs";
 import jsYaml from "js-yaml";
+import { parse as jsoncParse } from "jsonc-parser";
 import { applyFix, applyFixes, type LintError, type Options, readConfigSync, sync } from "markdownlint";
 import path from "node:path";
 import rc from "rc";
 
-const projectConfigFiles = [".markdownlint.json", ".markdownlint.yaml", ".markdownlint.yml"];
-const configFileParsers = [JSON.parse, jsYaml.load];
+// Config files for markdownlint-cli2 (full CLI config, "config" property is extracted)
+const projectConfigFilesCli2 = [
+  ".markdownlint-cli2.jsonc",
+  ".markdownlint-cli2.yaml",
+];
+// Config files for markdownlint rules only, in precedence order per markdownlint-cli2 spec
+const projectConfigFiles = [
+  ".markdownlint.jsonc",
+  ".markdownlint.json",
+  ".markdownlint.yaml",
+  ".markdownlint.yml",
+];
+
+const configFileParsers = [jsoncParse, jsYaml.load];
 
 export class MarkdownlintEngine implements CodeActionProvider {
   public readonly fixAllCommandName = "markdownlint.fixAll";
@@ -46,19 +59,37 @@ export class MarkdownlintEngine implements CodeActionProvider {
     }
 
     try {
-      for (const projectConfigFile of projectConfigFiles) {
-        const fullPath = path.join(workspace.root, projectConfigFile);
+      for (const configFile of projectConfigFiles) {
+        const fullPath = path.join(workspace.root, configFile);
         if (fs.existsSync(fullPath)) {
           // @ts-expect-error
           const projectConfig = readConfigSync(fullPath, configFileParsers);
           this.config = extend(this.config, projectConfig);
-
           this.outputLine(`Info: local config: ${fullPath}, ${JSON.stringify(projectConfig)}`);
           break;
         }
       }
     } catch (e) {
       this.outputLine(`Error: local config parse failed: ${e}`);
+    }
+
+    try {
+      for (const configFile of projectConfigFilesCli2) {
+        const fullPath = path.join(workspace.root, configFile);
+        if (fs.existsSync(fullPath)) {
+          // @ts-expect-error
+          const cli2Config = readConfigSync(fullPath, configFileParsers);
+          const projectConfig =
+            cli2Config && typeof cli2Config === "object" && "config" in (cli2Config as object)
+              ? (cli2Config as { config: unknown }).config
+              : cli2Config;
+          this.config = extend(this.config, projectConfig);
+          this.outputLine(`Info: local config (cli2): ${fullPath}, ${JSON.stringify(projectConfig)}`);
+          break;
+        }
+      }
+    } catch (e) {
+      this.outputLine(`Error: local config (cli2) parse failed: ${e}`);
     }
 
     const cocConfig = workspace.getConfiguration("markdownlint").get<{ [key: string]: unknown }>("config");
