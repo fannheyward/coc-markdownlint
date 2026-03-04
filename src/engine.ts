@@ -23,17 +23,9 @@ import path from "node:path";
 import rc from "rc";
 
 // Config files for markdownlint-cli2 (full CLI config, "config" property is extracted)
-const projectConfigFilesCli2 = [
-  ".markdownlint-cli2.jsonc",
-  ".markdownlint-cli2.yaml",
-];
+const projectConfigFilesCli2 = [".markdownlint-cli2.jsonc", ".markdownlint-cli2.yaml"];
 // Config files for markdownlint rules only, in precedence order per markdownlint-cli2 spec
-const projectConfigFiles = [
-  ".markdownlint.jsonc",
-  ".markdownlint.json",
-  ".markdownlint.yaml",
-  ".markdownlint.yml",
-];
+const projectConfigFiles = [".markdownlint.jsonc", ".markdownlint.json", ".markdownlint.yaml", ".markdownlint.yml"];
 
 const configFileParsers = [jsoncParse, jsYaml.load];
 
