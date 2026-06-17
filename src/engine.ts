@@ -18,7 +18,15 @@ import extend from "deep-extend";
 import fs from "node:fs";
 import jsYaml from "js-yaml";
 import { parse as jsoncParse } from "jsonc-parser";
-import { applyFix, applyFixes, type LintError, type Options, readConfigSync, sync } from "markdownlint";
+import {
+  applyFix,
+  applyFixes,
+  type Configuration,
+  type ConfigurationParser,
+  type LintError,
+  type Options,
+} from "markdownlint";
+import { lint, readConfig } from "markdownlint/sync";
 import path from "node:path";
 import rc from "rc";
 
@@ -27,7 +35,7 @@ const projectConfigFilesCli2 = [".markdownlint-cli2.jsonc", ".markdownlint-cli2.
 // Config files for markdownlint rules only, in precedence order per markdownlint-cli2 spec
 const projectConfigFiles = [".markdownlint.jsonc", ".markdownlint.json", ".markdownlint.yaml", ".markdownlint.yml"];
 
-const configFileParsers = [jsoncParse, jsYaml.load];
+const configFileParsers: ConfigurationParser[] = [jsoncParse, (text) => jsYaml.load(text) as Configuration];
 
 export class MarkdownlintEngine implements CodeActionProvider {
   public readonly fixAllCommandName = "markdownlint.fixAll";
@@ -54,8 +62,7 @@ export class MarkdownlintEngine implements CodeActionProvider {
       for (const configFile of projectConfigFiles) {
         const fullPath = path.join(workspace.root, configFile);
         if (fs.existsSync(fullPath)) {
-          // @ts-expect-error
-          const projectConfig = readConfigSync(fullPath, configFileParsers);
+          const projectConfig = readConfig(fullPath, configFileParsers);
           this.config = extend(this.config, projectConfig);
           this.outputLine(`Info: local config: ${fullPath}, ${JSON.stringify(projectConfig)}`);
           break;
@@ -69,11 +76,10 @@ export class MarkdownlintEngine implements CodeActionProvider {
       for (const configFile of projectConfigFilesCli2) {
         const fullPath = path.join(workspace.root, configFile);
         if (fs.existsSync(fullPath)) {
-          // @ts-expect-error
-          const cli2Config = readConfigSync(fullPath, configFileParsers);
+          const cli2Config = readConfig(fullPath, configFileParsers);
           const projectConfig =
             cli2Config && typeof cli2Config === "object" && "config" in (cli2Config as object)
-              ? (cli2Config as { config: unknown }).config
+              ? (cli2Config as { config: Configuration }).config
               : cli2Config;
           this.config = extend(this.config, projectConfig);
           this.outputLine(`Info: local config (cli2): ${fullPath}, ${JSON.stringify(projectConfig)}`);
@@ -95,8 +101,7 @@ export class MarkdownlintEngine implements CodeActionProvider {
 
   private markdownlintWrapper(document: TextDocument): LintError[] {
     const options: Options = {
-      resultVersion: 3,
-      config: this.config,
+      config: this.config as Configuration,
       // customRules: customRules,
       strings: {
         [document.uri]: document.getText(),
@@ -105,7 +110,7 @@ export class MarkdownlintEngine implements CodeActionProvider {
 
     let results: LintError[] = [];
     try {
-      results = sync(options)[document.uri] as LintError[];
+      results = lint(options)[document.uri] as LintError[];
     } catch (e) {
       this.outputLine(`Error: lint exception: ${e}`);
     }

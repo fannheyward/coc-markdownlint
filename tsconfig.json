@@ -2,12 +2,12 @@
   "compilerOptions": {
     "target": "es2017",
     "lib": ["es2017", "es2018"],
-    "module": "commonjs",
+    "module": "esnext",
     "declaration": false,
     "sourceMap": true,
     "outDir": "lib",
     "strict": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "noImplicitAny": false,
     "esModuleInterop": true
   },
