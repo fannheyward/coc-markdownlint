@@ -1,6 +1,6 @@
 {
   "name": "coc-markdownlint",
-  "version": "1.36.1",
+  "version": "1.41.0",
   "description": "Markdownlint extension for coc.nvim",
   "author": "Heyward Fann <fannheyward@gmail.com>",
   "license": "MIT",
@@ -5213,5 +5213,8 @@
         "title": "Fix all errors found by markdownlint"
       }
     ]
+  },
+  "allowScripts": {
+    "esbuild@0.28.1": true
   }
 }
