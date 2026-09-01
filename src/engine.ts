@@ -16,7 +16,7 @@ import {
 } from "coc.nvim";
 import extend from "deep-extend";
 import fs from "node:fs";
-import jsYaml from "js-yaml";
+import * as jsYaml from "js-yaml";
 import { parse as jsoncParse } from "jsonc-parser";
 import {
   applyFix,
