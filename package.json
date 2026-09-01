@@ -31,7 +31,7 @@
     "coc.nvim": "^0.0.83-next.18",
     "deep-extend": "^0.6.0",
     "esbuild": "^0.28.0",
-    "js-yaml": "^4.1.0",
+    "js-yaml": "^5.4.1",
     "jsonc-parser": "^3.3.1",
     "markdownlint": "^0.41.0",
     "rc": "^1.2.8",
