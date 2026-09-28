@@ -35,7 +35,20 @@ const projectConfigFilesCli2 = [".markdownlint-cli2.jsonc", ".markdownlint-cli2.
 // Config files for markdownlint rules only, in precedence order per markdownlint-cli2 spec
 const projectConfigFiles = [".markdownlint.jsonc", ".markdownlint.json", ".markdownlint.yaml", ".markdownlint.yml"];
 
-const configFileParsers: ConfigurationParser[] = [jsoncParse, (text) => jsYaml.load(text) as Configuration];
+// jsonc-parser's parse() returns undefined instead of throwing for input
+// it cannot parse, so markdownlint would treat the empty result as a
+// successful parse and never try the remaining parsers (e.g. YAML files
+// yielded an empty configuration). Wrap it to honor the
+// ConfigurationParser contract: throw on failure.
+const parseJsonc: ConfigurationParser = (text) => {
+  const result = jsoncParse(text);
+  if (result === undefined) {
+    throw new Error("Unable to parse JSONC content");
+  }
+  return result;
+};
+
+const configFileParsers: ConfigurationParser[] = [parseJsonc, (text) => jsYaml.load(text) as Configuration];
 
 export class MarkdownlintEngine implements CodeActionProvider {
   public readonly fixAllCommandName = "markdownlint.fixAll";
