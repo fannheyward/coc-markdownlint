@@ -23,15 +23,15 @@
     "url": "git+https://github.com/fannheyward/coc-markdownlint.git"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.0.0",
+    "@biomejs/biome": "^2.5.14",
     "@types/deep-extend": "^0.6.2",
     "@types/js-yaml": "^4.0.9",
     "@types/node": "26",
     "@types/rc": "^1.2.4",
     "coc.nvim": "^0.0.83-next.18",
     "deep-extend": "^0.6.0",
-    "esbuild": "^0.28.0",
-    "js-yaml": "^5.4.1",
+    "esbuild": "^0.28.2",
+    "js-yaml": "^5.4.2",
     "jsonc-parser": "^3.3.1",
     "markdownlint": "^0.41.0",
     "rc": "^1.2.8",
@@ -5215,6 +5215,6 @@
     ]
   },
   "allowScripts": {
-    "esbuild@0.28.1": true
+    "esbuild@0.28.2": true
   }
 }
