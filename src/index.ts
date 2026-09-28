@@ -53,6 +53,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
 
   context.subscriptions.push(
     languages.registerCodeActionProvider(documentSelector, engine, "markdownlint"),
+    languages.registerDocumentSymbolProvider(documentSelector, engine, { label: "markdownlint" }),
     commands.registerCommand(engine.fixAllCommandName, async () => {
       const { document } = await workspace.getCurrentState();
       engine.fixAll(document);
@@ -61,6 +62,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
     workspace.onDidOpenTextDocument(didOpenTextDocument),
     workspace.onDidChangeTextDocument(didChangeTextDocument),
     workspace.onDidSaveTextDocument(didSaveTextDocument),
+    workspace.onDidCloseTextDocument((document) => engine.forgetDocumentSymbols(document.uri)),
   );
 
   workspace.documents.forEach((doc) => {
