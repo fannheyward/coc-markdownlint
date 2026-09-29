@@ -14,8 +14,6 @@ interface ParsedHeading {
   text: string | null;
   /** Character offset of the heading start (the "#" markers for ATX, the text otherwise) */
   rangeStart: number;
-  /** Character offset of the heading end (end of the underline line for setext) */
-  rangeEnd: number;
   /** Character offset of the heading text (== rangeStart for empty headings) */
   textStart: number;
   /** Character offset just past the heading text */
@@ -45,13 +43,10 @@ function parseHeadings(text: string): ParsedHeading[] {
     const type = token.type;
     if (type === types.atxHeading || type === types.setextHeading) {
       if (kind === "enter") {
-        // Container tokens are shared between their enter/exit events and
-        // already carry final offsets, so the whole span is known up front
         current = {
           level: 0,
           text: null,
           rangeStart: token.start.offset,
-          rangeEnd: token.end.offset,
           textStart: token.start.offset,
           textEnd: token.start.offset,
         };
@@ -106,22 +101,14 @@ function positionFromOffset(lineOffsets: number[], offset: number): Position {
   return Position.create(low, offset - lineOffsets[low]);
 }
 
-function symbolKindForHeadingLevel(level: number): SymbolKind {
-  switch (level) {
-    case 1:
-      return SymbolKind.File;
-    case 2:
-      return SymbolKind.Module;
-    case 3:
-      return SymbolKind.Namespace;
-    case 4:
-      return SymbolKind.Package;
-    case 5:
-      return SymbolKind.Class;
-    default:
-      return SymbolKind.Method;
-  }
-}
+const headingSymbolKinds = [
+  SymbolKind.File,
+  SymbolKind.Module,
+  SymbolKind.Namespace,
+  SymbolKind.Package,
+  SymbolKind.Class,
+  SymbolKind.Method,
+];
 
 /**
  * Builds a hierarchical document outline from the markdown headings found in
@@ -134,9 +121,10 @@ function symbolKindForHeadingLevel(level: number): SymbolKind {
 export function outlineSymbols(text: string): DocumentSymbol[] {
   const headings = parseHeadings(text);
   const lineOffsets = computeLineOffsets(text);
+  const documentEnd = positionFromOffset(lineOffsets, text.replace(/\r?\n$/, "").length);
 
   const symbols: DocumentSymbol[] = [];
-  const stack: { level: number; children: DocumentSymbol[] }[] = [];
+  const stack: { level: number; children: DocumentSymbol[]; range: Range }[] = [];
   for (const heading of headings) {
     const { level } = heading;
     const name = heading.text?.replace(/\s*\n\s*/g, " ").trim() || "#".repeat(level);
@@ -144,11 +132,8 @@ export function outlineSymbols(text: string): DocumentSymbol[] {
     const symbol = DocumentSymbol.create(
       name,
       undefined,
-      symbolKindForHeadingLevel(level),
-      Range.create(
-        positionFromOffset(lineOffsets, heading.rangeStart),
-        positionFromOffset(lineOffsets, heading.rangeEnd),
-      ),
+      headingSymbolKinds[level - 1],
+      Range.create(positionFromOffset(lineOffsets, heading.rangeStart), documentEnd),
       Range.create(
         positionFromOffset(lineOffsets, heading.textStart),
         positionFromOffset(lineOffsets, heading.textEnd),
@@ -157,11 +142,17 @@ export function outlineSymbols(text: string): DocumentSymbol[] {
     );
 
     while (stack.length && stack[stack.length - 1].level >= level) {
+      // CocOutline includes range endpoints, so stop before the next heading's line.
+      let endOffset = lineOffsets[symbol.range.start.line] - 1;
+      if (text[endOffset - 1] === "\r") {
+        endOffset--;
+      }
+      stack[stack.length - 1].range.end = positionFromOffset(lineOffsets, endOffset);
       stack.pop();
     }
     const parent = stack.length ? stack[stack.length - 1] : undefined;
     (parent ? parent.children : symbols).push(symbol);
-    stack.push({ level, children });
+    stack.push({ level, children, range: symbol.range });
   }
 
   return symbols;

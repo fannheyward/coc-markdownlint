@@ -8,16 +8,6 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const stubPath = path.join(rootDir, "test", "stubs", "coc.nvim.js");
 
-/** esbuild plugin that swaps coc.nvim for the test stub at bundle time. */
-function cocNvimStub() {
-  return {
-    name: "coc-nvim-stub",
-    setup(build) {
-      build.onResolve({ filter: /^coc\.nvim$/ }, () => ({ path: stubPath }));
-    },
-  };
-}
-
 /**
  * Bundles src/<entry> into test/.build/<outfile> and returns its exports.
  * Bundling mirrors esbuild.mjs (same mainFields) so tests exercise the real
@@ -33,7 +23,7 @@ export async function bundle(entry, outfile) {
     // Same as esbuild.mjs: prefer ESM builds so UMD wrappers (e.g.
     // jsonc-parser) don't leak runtime requires outside the bundle
     mainFields: ["module", "main"],
-    plugins: [cocNvimStub()],
+    alias: { "coc.nvim": stubPath },
     outfile: outPath,
   });
   const require = createRequire(pathToFileURL(outPath).href);

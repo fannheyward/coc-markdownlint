@@ -206,6 +206,48 @@ test("ranges", () => {
   });
 });
 
+for (const eol of ["\n", "\r\n"]) {
+  test(`section ranges include body and nested headings with ${JSON.stringify(eol)}`, () => {
+    const lines = [
+      "# Parent",
+      "parent body",
+      "### Deep",
+      "deep 😀",
+      "## Sibling",
+      "sibling body",
+      "# Next",
+      "next body",
+    ];
+    for (const trailingEol of ["", eol]) {
+      const [parent, next] = outlineSymbols(lines.join(eol) + trailingEol);
+      const [deep, sibling] = parent.children;
+      assert.deepEqual(parent.range.end, { line: 5, character: 12 });
+      assert.deepEqual(deep.range.end, { line: 3, character: 7 });
+      assert.deepEqual(sibling.range.end, parent.range.end);
+      assert.deepEqual(next.range.end, { line: 7, character: 9 });
+      assert.deepEqual(parent.selectionRange, {
+        start: { line: 0, character: 2 },
+        end: { line: 0, character: 8 },
+      });
+      assert.deepEqual(deep.selectionRange, {
+        start: { line: 2, character: 4 },
+        end: { line: 2, character: 8 },
+      });
+    }
+  });
+}
+
+test("setext section ranges include quoted children and stop before the next title", () => {
+  const [parent, next] = outlineSymbols("Title\n=====\n\n> ## Child\n> body\n\nNext\n====\nTail");
+  assert.deepEqual(parent.range.end, { line: 5, character: 0 });
+  assert.deepEqual(parent.children[0].range.end, parent.range.end);
+  assert.deepEqual(next.range.end, { line: 8, character: 4 });
+  assert.deepEqual(next.selectionRange, {
+    start: { line: 6, character: 0 },
+    end: { line: 6, character: 4 },
+  });
+});
+
 test("unicode", () => {
   const doc = "# 中文标题\n";
   const s = outlineSymbols(doc)[0];

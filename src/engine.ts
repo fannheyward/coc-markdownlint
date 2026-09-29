@@ -250,6 +250,7 @@ export class MarkdownlintEngine implements CodeActionProvider, DocumentSymbolPro
       return cached.symbols;
     }
     const symbols = outlineSymbols(document.getText());
+    this.symbolCache.delete(uri);
     this.symbolCache.set(uri, { version, symbols });
     while (this.symbolCache.size > symbolCacheMaxEntries) {
       // The map is non-empty inside this loop, so a first key always exists
