@@ -3,8 +3,11 @@ import {
   type CodeActionContext,
   CodeActionKind,
   type CodeActionProvider,
+  type CancellationToken,
   Diagnostic,
   DiagnosticSeverity,
+  type DocumentSymbol,
+  type DocumentSymbolProvider,
   Position,
   Range,
   type TextDocument,
@@ -29,6 +32,7 @@ import {
 import { lint, readConfig } from "markdownlint/sync";
 import path from "node:path";
 import rc from "rc";
+import { outlineSymbols } from "./outline";
 
 // Config files for markdownlint-cli2 (full CLI config, "config" property is extracted)
 const projectConfigFilesCli2 = [".markdownlint-cli2.jsonc", ".markdownlint-cli2.yaml"];
@@ -50,12 +54,20 @@ const parseJsonc: ConfigurationParser = (text) => {
 
 const configFileParsers: ConfigurationParser[] = [parseJsonc, (text) => jsYaml.load(text) as Configuration];
 
-export class MarkdownlintEngine implements CodeActionProvider {
+// Outline symbol cache bound: entries are dropped when their document closes,
+// and the least recently used entry is evicted when this many documents are
+// cached at once (many documents staying open)
+const symbolCacheMaxEntries = 10;
+
+export class MarkdownlintEngine implements CodeActionProvider, DocumentSymbolProvider {
   public readonly fixAllCommandName = "markdownlint.fixAll";
   private readonly source = "markdownlint";
   private outputChannel = window.createOutputChannel(this.source);
   private diagnosticCollection = languages.createDiagnosticCollection(this.source);
   private config: { [key: string]: unknown } = {};
+  // Outline list refreshes re-request symbols for unchanged documents; keep
+  // per-document results keyed by uri, invalidated by document version
+  private symbolCache = new Map<string, { version: number; symbols: DocumentSymbol[] }>();
 
   private outputLine(message: string) {
     if (this.outputChannel) {
@@ -223,6 +235,33 @@ export class MarkdownlintEngine implements CodeActionProvider {
     }
 
     return codeActions;
+  }
+
+  public provideDocumentSymbols(document: TextDocument, _token: CancellationToken): DocumentSymbol[] {
+    if (document.languageId !== "markdown") {
+      return [];
+    }
+    const { uri, version } = document;
+    const cached = this.symbolCache.get(uri);
+    if (cached && cached.version === version) {
+      // Refresh insertion order so eviction stays least-recently-used
+      this.symbolCache.delete(uri);
+      this.symbolCache.set(uri, cached);
+      return cached.symbols;
+    }
+    const symbols = outlineSymbols(document.getText());
+    this.symbolCache.set(uri, { version, symbols });
+    while (this.symbolCache.size > symbolCacheMaxEntries) {
+      // The map is non-empty inside this loop, so a first key always exists
+      const oldest = this.symbolCache.keys().next().value as string;
+      this.symbolCache.delete(oldest);
+    }
+    return symbols;
+  }
+
+  /** Drops cached outline symbols, e.g. when the document is closed. */
+  public forgetDocumentSymbols(uri: string) {
+    this.symbolCache.delete(uri);
   }
 
   public lint(document: TextDocument) {

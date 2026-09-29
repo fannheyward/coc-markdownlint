@@ -8,6 +8,7 @@
 
 - Style lint
 - Autofix
+- Document outline
 
 `<Plug>(coc-codeaction)` on current diagnostic, you will find available codeAction, choose by number to fix.
 

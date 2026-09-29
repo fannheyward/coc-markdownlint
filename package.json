@@ -12,8 +12,10 @@
     "coc": "^0.0.80"
   },
   "scripts": {
-    "lint": "biome check src/*.ts",
-    "format": "biome format --write src/*.ts",
+    "lint": "biome check src/*.ts test/*.mjs",
+    "format": "biome format --write src/*.ts test/*.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test \"test/*.test.mjs\"",
     "schema": "node generate-config-schema.js",
     "build": "node esbuild.mjs",
     "prepare": "node esbuild.mjs"
@@ -34,6 +36,8 @@
     "js-yaml": "^5.4.2",
     "jsonc-parser": "^3.3.1",
     "markdownlint": "^0.41.1",
+    "micromark": "^4.0.2",
+    "micromark-util-symbol": "^2.0.1",
     "rc": "^1.2.8",
     "typescript": "^7.0.2"
   },

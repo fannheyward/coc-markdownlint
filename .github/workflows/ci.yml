@@ -35,3 +35,9 @@ jobs:
       - name: npm format
         run: |
           npm run format
+      - name: npm typecheck
+        run: |
+          npm run typecheck
+      - name: npm test
+        run: |
+          npm test
