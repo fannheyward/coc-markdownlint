@@ -54,6 +54,26 @@ const parseJsonc: ConfigurationParser = (text) => {
 
 const configFileParsers: ConfigurationParser[] = [parseJsonc, (text) => jsYaml.load(text) as Configuration];
 
+// deep-extend merges plain objects without filtering dangerous keys, so an
+// untrusted config value of __proto__/constructor/prototype could pollute
+// Object.prototype. Strip those keys recursively before merging.
+function stripDangerousKeys(value: unknown): unknown {
+  if (Array.isArray(value)) {
+    return value.map(stripDangerousKeys);
+  }
+  if (value && typeof value === "object") {
+    const result: { [key: string]: unknown } = {};
+    for (const key of Object.keys(value as object)) {
+      if (key === "__proto__" || key === "constructor" || key === "prototype") {
+        continue;
+      }
+      result[key] = stripDangerousKeys((value as { [key: string]: unknown })[key]);
+    }
+    return result;
+  }
+  return value;
+}
+
 // Outline symbol cache bound: entries are dropped when their document closes,
 // and the least recently used entry is evicted when this many documents are
 // cached at once (many documents staying open)
@@ -88,7 +108,7 @@ export class MarkdownlintEngine implements CodeActionProvider, DocumentSymbolPro
         const fullPath = path.join(workspace.root, configFile);
         if (fs.existsSync(fullPath)) {
           const projectConfig = readConfig(fullPath, configFileParsers);
-          this.config = extend(this.config, projectConfig);
+          this.config = extend(this.config, stripDangerousKeys(projectConfig));
           this.outputLine(`Info: local config: ${fullPath}, ${JSON.stringify(projectConfig)}`);
           break;
         }
@@ -106,7 +126,7 @@ export class MarkdownlintEngine implements CodeActionProvider, DocumentSymbolPro
             cli2Config && typeof cli2Config === "object" && "config" in (cli2Config as object)
               ? (cli2Config as { config: Configuration }).config
               : cli2Config;
-          this.config = extend(this.config, projectConfig);
+          this.config = extend(this.config, stripDangerousKeys(projectConfig));
           this.outputLine(`Info: local config (cli2): ${fullPath}, ${JSON.stringify(projectConfig)}`);
           break;
         }
@@ -117,7 +137,7 @@ export class MarkdownlintEngine implements CodeActionProvider, DocumentSymbolPro
 
     const cocConfig = workspace.getConfiguration("markdownlint").get<{ [key: string]: unknown }>("config");
     if (cocConfig) {
-      this.config = extend(this.config, cocConfig);
+      this.config = extend(this.config, stripDangerousKeys(cocConfig));
       this.outputLine(`Info: config from coc-settings.json: ${JSON.stringify(cocConfig)}`);
     }
 
