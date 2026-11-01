@@ -35,7 +35,7 @@
     "esbuild": "^0.28.2",
     "js-yaml": "^5.4.2",
     "jsonc-parser": "^3.3.1",
-    "markdownlint": "^0.41.1",
+    "markdownlint": "^0.42.0",
     "micromark": "^4.0.2",
     "micromark-util-symbol": "^2.0.1",
     "rc": "^1.2.8",
